@@ -40,8 +40,8 @@ Route::group(
     ],
     function () {
         Route::get('/matpel', [MatpelController::class, 'index'])->name('admin.matpel');
-        // Route::post('/logout', [LoginController::class, 'logout'])->name('admin.logout');
-        // Route::get('/register', [LoginController::class, 'register'])->name('admin.register');
+        Route::get('/matpel_add', [MatpelController::class, 'add'])->name('admin.matpel_add');
+        Route::get('/matpel_edit', [MatpelController::class, 'edit'])->name('admin.matpel_edit');
         // Route::post('/post', [LoginController::class, 'store'])->name('admin.store');
     }
 );

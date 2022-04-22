@@ -5,19 +5,23 @@
             <div class="container-fluid">
                 <div class="row align-items-center">
                     <div class="col-md-8">
-                        <h4 class="page-title mb-1">{{ ucwords($menu) }}</h4>
+                        <h4 class="page-title mb-1">{{ $menu }}</h4>
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="javascript: void(0);">{{ ucwords($list) }}</a></li>
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">{{ $list }}</a></li>
                         </ol>
                     </div>
                     <div class="col-md-4">
-                        <div class="float-right">
-                            <a href="{{ route('admin.matpel_add') }}" class="btn btn-light btn-rounded dropdown-toggle">
-                                <i class="mdi mdi mdi-plus-thick mr-1"></i> Tambah
-                            </a>
+                        <div class="float-right d-none d-md-block">
+                            <div class="dropdown">
+                                <a href="{{ route('admin.matpel_add') }}"
+                                    class="btn btn-light btn-rounded dropdown-toggle">
+                                    <i class="mdi mdi mdi-plus-thick mr-1"></i> Tambah
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
         <div class="page-content-wrapper">
@@ -46,23 +50,7 @@
                                             <td>Edinburgh</td>
                                             <td>61</td>
                                             <td>2011/04/25</td>
-                                            <td>
-                                                <div class="btn-group" role="group">
-                                                    <a href="" class="btn btn-info btn-sm" data-toggle="tooltip"
-                                                        data-placement="top" title="View">
-                                                        <i class="mdi mdi-eye"></i>
-                                                    </a>
-                                                    <a href="{{ route('admin.matpel_edit') }}"
-                                                        class="btn btn-warning btn-sm" data-toggle="tooltip"
-                                                        data-placement="top" title="Edit">
-                                                        <i class="mdi mdi-pencil"></i>
-                                                    </a>
-                                                    <button type="button" class="btn btn-danger btn-sm"
-                                                        data-toggle="tooltip" data-placement="top" title="Delete">
-                                                        <i class="mdi mdi-trash-can"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
+                                            <td>$320,800</td>
                                         </tr>
                                         <tr>
                                             <td>Cara Stevens</td>

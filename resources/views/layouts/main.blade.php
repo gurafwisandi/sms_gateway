@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Dashboard | Xoric - Responsive Bootstrap 4 Admin Dashboard</title>
+    <title>{{ $menu }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesdesign" name="author" />
@@ -20,18 +20,14 @@
     <link href="{{ URL::asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- App Css-->
     <link href="{{ URL::asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
-
-
     <!-- DataTables -->
     <link href="{{ URL::asset('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet"
         type="text/css" />
     <link href="{{ URL::asset('assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}"
         rel="stylesheet" type="text/css" />
-
     <!-- Responsive datatable examples -->
     <link href="{{ URL::asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}"
         rel="stylesheet" type="text/css" />
-
 </head>
 
 <body data-topbar="colored">
@@ -58,19 +54,10 @@
     <script src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}"></script>
     <script src="{{ asset('assets/libs/node-waves/waves.min.js') }}"></script>
     <script src="{{ asset('assets/bundle.js') }}"></script>
+    <script src="{{ asset('assets/js/app.js') }}"></script>
     <!-- datepicker -->
     <script src="{{ asset('assets/libs/air-datepicker/js/datepicker.min.js') }}"></script>
     <script src="{{ asset('assets/libs/air-datepicker/js/i18n/datepicker.en.js') }}"></script>
-    <!-- apexcharts -->
-    <script src="{{ asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script>
-    <script src="{{ asset('assets/libs/jquery-knob/jquery.knob.min.js') }}"></script>
-    <!-- Jq vector map -->
-    <script src="{{ asset('assets/libs/jqvmap/jquery.vmap.min.js') }}"></script>
-    <script src="{{ asset('assets/libs/jqvmap/maps/jquery.vmap.usa.js') }}"></script>
-    <script src="{{ asset('assets/js/pages/dashboard.init.js') }}"></script>
-    <script src="{{ asset('assets/js/app.js') }}"></script>
-
-
     <!-- Required datatable js -->
     <script src="{{ asset('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
@@ -86,10 +73,12 @@
     <!-- Responsive examples -->
     <script src="{{ asset('assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
-
     <!-- Datatable init js -->
     <script src="{{ asset('assets/js/pages/datatables.init.js') }}"></script>
-
+    <!-- parsleyjs -->
+    <script src="{{ asset('assets/libs/parsleyjs/parsley.min.js') }}"></script>
+    <!-- validation init -->
+    <script src="{{ asset('assets/js/pages/form-validation.init.js') }}"></script>
 </body>
 
 </html>

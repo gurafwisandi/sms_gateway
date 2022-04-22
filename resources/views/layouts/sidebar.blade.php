@@ -7,9 +7,8 @@
             <ul class="metismenu list-unstyled" id="side-menu">
                 <li class="menu-title">Menu</li>
                 <li>
-                    <a href="#" class="waves-effect">
+                    <a href="{{ route('dashboard') }}" class="waves-effect">
                         <div class="d-inline-block icons-sm mr-1"><i class="uim uim-airplay"></i></div>
-                        {{-- <span class="badge badge-pill badge-success float-right">3</span> --}}
                         <span>Dashboard</span>
                     </a>
                 </li>
