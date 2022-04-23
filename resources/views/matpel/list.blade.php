@@ -7,7 +7,7 @@
                     <div class="col-md-8">
                         <h4 class="page-title mb-1">{{ ucwords($menu) }}</h4>
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="javascript: void(0);">{{ ucwords($list) }}</a></li>
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">{{ ucwords($title) }}</a></li>
                         </ol>
                     </div>
                     <div class="col-md-4">
@@ -31,95 +31,43 @@
                                     style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Position</th>
-                                            <th>Office</th>
-                                            <th>Age</th>
-                                            <th>Start date</th>
-                                            <th>Salary</th>
+                                            <th>No</th>
+                                            <th>Mata Pelajaran</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>Tiger Nixon</td>
-                                            <td>System Architect</td>
-                                            <td>Edinburgh</td>
-                                            <td>61</td>
-                                            <td>2011/04/25</td>
-                                            <td>
-                                                <div class="btn-group" role="group">
-                                                    <a href="" class="btn btn-info btn-sm" data-toggle="tooltip"
-                                                        data-placement="top" title="View">
-                                                        <i class="mdi mdi-eye"></i>
-                                                    </a>
-                                                    <a href="{{ route('admin.matpel_edit') }}"
-                                                        class="btn btn-warning btn-sm" data-toggle="tooltip"
-                                                        data-placement="top" title="Edit">
-                                                        <i class="mdi mdi-pencil"></i>
-                                                    </a>
-                                                    <button type="button" class="btn btn-danger btn-sm"
-                                                        data-toggle="tooltip" data-placement="top" title="Delete">
-                                                        <i class="mdi mdi-trash-can"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Cara Stevens</td>
-                                            <td>Sales Assistant</td>
-                                            <td>New York</td>
-                                            <td>46</td>
-                                            <td>2011/12/06</td>
-                                            <td>$145,600</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Hermione Butler</td>
-                                            <td>Regional Director</td>
-                                            <td>London</td>
-                                            <td>47</td>
-                                            <td>2011/03/21</td>
-                                            <td>$356,250</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Lael Greer</td>
-                                            <td>Systems Administrator</td>
-                                            <td>London</td>
-                                            <td>21</td>
-                                            <td>2009/02/27</td>
-                                            <td>$103,500</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Jonas Alexander</td>
-                                            <td>Developer</td>
-                                            <td>San Francisco</td>
-                                            <td>30</td>
-                                            <td>2010/07/14</td>
-                                            <td>$86,500</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Shad Decker</td>
-                                            <td>Regional Director</td>
-                                            <td>Edinburgh</td>
-                                            <td>51</td>
-                                            <td>2008/11/13</td>
-                                            <td>$183,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Michael Bruce</td>
-                                            <td>Javascript Developer</td>
-                                            <td>Singapore</td>
-                                            <td>29</td>
-                                            <td>2011/06/27</td>
-                                            <td>$183,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Donna Snider</td>
-                                            <td>Customer Support</td>
-                                            <td>New York</td>
-                                            <td>27</td>
-                                            <td>2011/01/25</td>
-                                            <td>$112,000</td>
-                                        </tr>
+                                        @foreach ($lists as $list)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $list->matpel }}</td>
+                                                <td>
+                                                    <?php $id = Crypt::encryptString($list->id); ?>
+                                                    <form class="delete-form"
+                                                        action="{{ route('admin.matpel_destroy', ['id' => $id]) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <div class="btn-group" role="group">
+                                                            {{-- <a href="" class="btn btn-info btn-sm" data-toggle="tooltip"
+                                                                data-placement="top" title="View">
+                                                                <i class="mdi mdi-eye"></i>
+                                                            </a> --}}
+                                                            <a href="{{ route('admin.matpel_edit', ['id' => $id]) }}"
+                                                                class="btn btn-warning btn-sm" data-toggle="tooltip"
+                                                                data-placement="top" title="Edit">
+                                                                <i class="mdi mdi-pencil"></i>
+                                                            </a>
+                                                            <button type="button"
+                                                                class="btn btn-danger btn-sm delete_confirm"
+                                                                data-toggle="tooltip" data-placement="top" title="Delete">
+                                                                <i class="mdi mdi-trash-can"></i>
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -130,4 +78,23 @@
         </div>
     </div>
     <script src="{{ asset('assets/libs/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/alert.js') }}"></script>
+    <script>
+        $('.delete_confirm').on('click', function(event) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Hapus Data',
+                text: 'Ingin menghapus data?',
+                icon: 'question',
+                showCloseButton: true,
+                showCancelButton: true,
+                cancelButtonText: "Batal",
+                focusConfirm: false,
+            }).then((value) => {
+                if (value.isConfirmed) {
+                    $(this).closest("form").submit()
+                }
+            });
+        });
+    </script>
 @endsection

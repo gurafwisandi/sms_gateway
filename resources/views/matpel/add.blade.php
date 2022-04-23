@@ -7,7 +7,7 @@
                     <div class="col-md-8">
                         <h4 class="page-title mb-1">{{ ucwords($menu) }}</h4>
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="javascript: void(0);">{{ ucwords($list) }}</a></li>
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">{{ ucwords($title) }}</a></li>
                         </ol>
                     </div>
                 </div>
@@ -19,10 +19,20 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <form class="custom-validation" action="#">
+                                <form class="custom-validation" action="{{ route('admin.matpel_store') }}" method="POST">
+                                    @csrf
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label>Mata Pelajaran</label>
+                                                <input type="text" class="form-control" name="matpel" required
+                                                    oninput="this.value = this.value.toUpperCase()"
+                                                    placeholder="Mata Pelajaran" />
+                                                <small class="text-danger">{{ $errors->first('matpel') }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="form-group">
-                                        <label>Mata Pelajaran</label>
-                                        <input type="text" class="form-control" required placeholder="Mata Pelajaran" />
                                     </div>
                                     <div class="form-group mb-0">
                                         <div>

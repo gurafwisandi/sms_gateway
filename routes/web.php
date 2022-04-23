@@ -30,18 +30,19 @@ Route::group(
     }
 );
 
-// Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 
 Route::group(
     [
         'prefix'     => 'admin',
-        // 'middleware'     => 'auth'
+        'middleware'     => 'auth'
     ],
     function () {
         Route::get('/matpel', [MatpelController::class, 'index'])->name('admin.matpel');
         Route::get('/matpel_add', [MatpelController::class, 'add'])->name('admin.matpel_add');
-        Route::get('/matpel_edit', [MatpelController::class, 'edit'])->name('admin.matpel_edit');
-        // Route::post('/post', [LoginController::class, 'store'])->name('admin.store');
+        Route::post('/matpel_store', [MatpelController::class, 'store'])->name('admin.matpel_store');
+        Route::get('/matpel_edit/{id}', [MatpelController::class, 'edit'])->name('admin.matpel_edit');
+        Route::post('/matpel_update', [MatpelController::class, 'update'])->name('admin.matpel_update');
+        Route::delete('/matpel_destroy', [MatpelController::class, 'destroy'])->name('admin.matpel_destroy');
     }
 );

@@ -13,23 +13,22 @@ class LoginController extends Controller
     }
     public function authenticate(Request $request)
     {
-        // $credentials = $request->validate([
-        //     'email' => 'required|email:dns',
-        //     'password' => 'required',
-        // ]);
-
+        $credentials = $request->validate([
+            'email' => 'required|email:dns',
+            'password' => 'required',
+        ]);
         // login password harus bcrpt baru bisa masuk auth::attempt
-        // if (Auth::attempt($credentials)) {
-        //     if (Auth::user()->status === 'A') {
-        //         $request->session()->regenerate();
-        return redirect()->intended('dashboard');
-        //     } else {
-        //         Auth::logout();
-        //         $request->session()->invalidate();
-        //         $request->session()->regenerateToken();
-        //         return back()->with('loginError', 'Login Fail!');
-        //     }
-        // }
+        if (Auth::attempt($credentials)) {
+            if (Auth::user()->status === 'aktif') {
+                $request->session()->regenerate();
+                return redirect()->intended('dashboard');
+            } else {
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+                return back()->with('loginError', 'Login Fail!');
+            }
+        }
 
         return back()->with('loginError', 'Login Fail!');
     }

@@ -37,15 +37,37 @@
                     <i class="mdi mdi-chevron-down d-none d-sm-inline-block"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <!-- item-->
                     <a class="dropdown-item" href="#"><i
                             class="mdi mdi-face-profile font-size-16 align-middle mr-1"></i> Profile</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#"><i class="mdi mdi-logout font-size-16 align-middle mr-1"></i>
-                        Logout</a>
+                    <form class="logout" action="{{ route('login.logout') }}" method="POST">
+                        @csrf
+                        <button class="dropdown-item"><i class="mdi mdi-logout font-size-16 align-middle mr-1"></i>
+                            Logout</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 
 </header>
+<script src="{{ asset('assets/libs/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('assets/alert.js') }}"></script>
+<script>
+    $('.logout').on('click', function(event) {
+        event.preventDefault();
+        Swal.fire({
+            title: 'Keluar Aplikasi',
+            text: 'Ingin keluar aplikasi?',
+            icon: 'question',
+            showCloseButton: true,
+            showCancelButton: true,
+            cancelButtonText: "Batal",
+            focusConfirm: false,
+        }).then((value) => {
+            if (value.isConfirmed) {
+                $(this).closest("form").submit()
+            }
+        });
+    });
+</script>
