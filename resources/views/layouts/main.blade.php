@@ -28,6 +28,14 @@
     <!-- Responsive datatable examples -->
     <link href="{{ URL::asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}"
         rel="stylesheet" type="text/css" />
+
+
+    <!-- spectrum colorpicker -->
+    {{-- <link href="{{ URL::asset('assets/libs/spectrum-colorpicker/spectrum.css') }}" rel="stylesheet"
+        type="text/css" /> --}}
+    {{-- <link href="{{ URL::asset('assets/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css') }}"
+        rel="stylesheet" /> --}}
+
 </head>
 
 <body data-topbar="colored">
@@ -79,6 +87,20 @@
     <script src="{{ asset('assets/libs/parsleyjs/parsley.min.js') }}"></script>
     <!-- validation init -->
     <script src="{{ asset('assets/js/pages/form-validation.init.js') }}"></script>
+
+
+    <!-- datepicker -->
+    {{-- <script src="{{ asset('assets/libs/air-datepicker/js/datepicker.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/air-datepicker/js/i18n/datepicker.en.js') }}"></script> --}}
+
+    {{-- <script src="{{ asset('assets/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js') }}"></script> --}}
+    {{-- <script src="{{ asset('assets/libs/bootstrap-maxlength/bootstrap-maxlength.min.js') }}"></script> --}}
+
+
+    <!-- Form Advanced init -->
+    {{-- <script src="{{ asset('assets/js/pages/form-advanced.init.js') }}"></script> --}}
+    <!-- Spectrum colorpicker -->
+    {{-- <script src="{{ asset('assets/libs/spectrum-colorpicker/spectrum.js') }}"></script> --}}
 </body>
 
 </html>

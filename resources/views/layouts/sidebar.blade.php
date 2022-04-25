@@ -13,9 +13,9 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.matpel') }}" class=" waves-effect">
-                        <div class="d-inline-block icons-sm mr-1"><i class="uim uim-layers-alt"></i></div>
-                        <span>Mata Pelajaran</span>
+                    <a href="#" class=" waves-effect">
+                        <div class="d-inline-block icons-sm mr-1"><i class="uim uim-horizontal-align-left"></i></div>
+                        <span>Sekolah</span>
                     </a>
                 </li>
                 <li>
@@ -25,9 +25,15 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class=" waves-effect">
-                        <div class="d-inline-block icons-sm mr-1"><i class="uim uim-horizontal-align-left"></i></div>
-                        <span>Sekolah</span>
+                    <a href="{{ route('admin.matpel') }}" class=" waves-effect">
+                        <div class="d-inline-block icons-sm mr-1"><i class="uim uim-layers-alt"></i></div>
+                        <span>Mata Pelajaran</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.user') }}" class=" waves-effect">
+                        <div class="d-inline-block icons-sm mr-1"><i class="uim uim-key-skeleton-alt"></i></div>
+                        <span>Akun</span>
                     </a>
                 </li>
                 <li>

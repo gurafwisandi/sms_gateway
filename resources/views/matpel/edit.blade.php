@@ -35,8 +35,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                    </div>
                                     <div class="form-group mb-0">
                                         <div>
                                             <a href="{{ route('admin.matpel') }}" class="btn btn-secondary waves-effect">

@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MatpelController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,11 +39,19 @@ Route::group(
         'middleware'     => 'auth'
     ],
     function () {
+        // matpel
         Route::get('/matpel', [MatpelController::class, 'index'])->name('admin.matpel');
         Route::get('/matpel_add', [MatpelController::class, 'add'])->name('admin.matpel_add');
         Route::post('/matpel_store', [MatpelController::class, 'store'])->name('admin.matpel_store');
         Route::get('/matpel_edit/{id}', [MatpelController::class, 'edit'])->name('admin.matpel_edit');
         Route::post('/matpel_update', [MatpelController::class, 'update'])->name('admin.matpel_update');
         Route::delete('/matpel_destroy', [MatpelController::class, 'destroy'])->name('admin.matpel_destroy');
+        // user
+        Route::get('/user', [UserController::class, 'index'])->name('admin.user');
+        Route::get('/user_add', [UserController::class, 'add'])->name('admin.user_add');
+        Route::post('/user_store', [UserController::class, 'store'])->name('admin.user_store');
+        Route::get('/user_edit/{id}', [UserController::class, 'edit'])->name('admin.user_edit');
+        Route::post('/user_update', [UserController::class, 'update'])->name('admin.user_update');
+        Route::delete('/user_destroy', [UserController::class, 'destroy'])->name('admin.user_destroy');
     }
 );
