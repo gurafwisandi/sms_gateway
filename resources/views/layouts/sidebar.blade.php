@@ -13,7 +13,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class=" waves-effect">
+                    <a href="{{ route('admin.sekolah') }}" class=" waves-effect">
                         <div class="d-inline-block icons-sm mr-1"><i class="uim uim-horizontal-align-left"></i></div>
                         <span>Sekolah</span>
                     </a>

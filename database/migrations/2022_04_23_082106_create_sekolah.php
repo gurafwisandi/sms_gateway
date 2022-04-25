@@ -19,6 +19,7 @@ class CreateSekolah extends Migration
             $table->string('sekolah');
             $table->string('alamat');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

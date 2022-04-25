@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MatpelController;
+use App\Http\Controllers\SekolahController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +40,13 @@ Route::group(
         'middleware'     => 'auth'
     ],
     function () {
+        // sekolah
+        Route::get('/sekolah', [SekolahController::class, 'index'])->name('admin.sekolah');
+        Route::get('/sekolah_add', [SekolahController::class, 'add'])->name('admin.sekolah_add');
+        Route::post('/sekolah_store', [SekolahController::class, 'store'])->name('admin.sekolah_store');
+        Route::get('/sekolah_edit/{id}', [SekolahController::class, 'edit'])->name('admin.sekolah_edit');
+        Route::post('/sekolah_update', [SekolahController::class, 'update'])->name('admin.sekolah_update');
+        Route::delete('/sekolah_destroy', [SekolahController::class, 'destroy'])->name('admin.sekolah_destroy');
         // matpel
         Route::get('/matpel', [MatpelController::class, 'index'])->name('admin.matpel');
         Route::get('/matpel_add', [MatpelController::class, 'add'])->name('admin.matpel_add');

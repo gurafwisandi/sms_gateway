@@ -19,6 +19,7 @@ class CreateKelas extends Migration
             $table->unsignedBigInteger('id_sekolah')->nullable();
             $table->foreign('id_sekolah')->references('id')->on('sekolah');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
