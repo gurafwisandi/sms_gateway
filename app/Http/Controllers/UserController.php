@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
-    protected $menu = 'Mata Pelajaran';
+    protected $menu = 'Akun';
     public function index()
     {
         $data = [
@@ -41,17 +41,24 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'User' => 'required|unique:User'
+            'name' => 'required',
+            'email' => 'required|unique:users',
+            'roles' => 'required',
+            'password' => 'required'
         ]);
         DB::beginTransaction();
         try {
-            $paket = new User();
-            $paket->User = $request->User;
-            $paket->save();
+            $user = new User();
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->roles = $request->roles;
+            $user->password = bcrypt($request->password);
+            $user->status = 'Aktif';
+            $user->save();
 
             DB::commit();
             AlertHelper::addAlert(true);
-            return redirect('admin/User');
+            return redirect('admin/user');
         } catch (\Exception $e) {
             dd($e);
             DB::rollback();
@@ -62,17 +69,26 @@ class UserController extends Controller
     {
         $request->validate([
             // validasi unique table User, field User, where id
-            'User' => 'required|unique:User,User,' . $request->id
+            'name' => 'required',
+            'email' => 'required|unique:users,email,' . $request->id,
+            'roles' => 'required',
+            'password' => 'required'
         ]);
         DB::beginTransaction();
         try {
             $User = User::findorfail($request->id);
-            $User->User = $request->User;
+            $User->name = $request->name;
+            $User->email = $request->email;
+            $User->roles = $request->roles;
+            if ($request->password !== $request->password_old) {
+                $User->password = bcrypt($request->password);
+            }
+            $User->status = isset($request->status) ? 'Aktif' : 'Tidak Aktif';
             $User->save();
 
             DB::commit();
             AlertHelper::addAlert(true);
-            return redirect('admin/User');
+            return redirect('admin/user');
         } catch (\Exception $e) {
             dd($e);
             DB::rollback();

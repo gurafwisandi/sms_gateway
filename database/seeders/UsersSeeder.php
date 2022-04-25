@@ -18,15 +18,15 @@ class UsersSeeder extends Seeder
             [
                 'name' => 'ini akun Admin',
                 'email' => 'admin@gmail.com',
-                'roles' => 'admin',
+                'roles' => 'Admin',
                 'password' => bcrypt('12345'),
-                'status' => 'aktif',
+                'status' => 'Aktif',
             ],
             [
                 'name' => 'ini akun User (non admin)',
                 'email' => 'user@gmail.com',
-                'roles' => 'guru',
-                'status' => 'aktif',
+                'roles' => 'Guru',
+                'status' => 'Aktif',
                 'password' => bcrypt('12345'),
             ],
         ];

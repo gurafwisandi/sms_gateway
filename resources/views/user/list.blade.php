@@ -32,7 +32,10 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th>Mata Pelajaran</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Roles</th>
+                                            <th>Status</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -41,6 +44,17 @@
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $list->name }}</td>
+                                                <td>{{ $list->email }}</td>
+                                                <td>{{ $list->roles }}</td>
+                                                <td>
+                                                    @if ($list->status === 'Aktif')
+                                                        <span
+                                                            class="badge badge-pill badge-primary">{{ $list->status }}</span>
+                                                    @else
+                                                        <span
+                                                            class="badge badge-pill badge-danger">{{ $list->status }}</span>
+                                                    @endif
+                                                </td>
                                                 <td>
                                                     <?php $id = Crypt::encryptString($list->id); ?>
                                                     <form class="delete-form"
