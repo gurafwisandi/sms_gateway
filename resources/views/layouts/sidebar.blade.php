@@ -19,7 +19,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class=" waves-effect">
+                    <a href="{{ route('admin.kelas') }}" class=" waves-effect">
                         <div class="d-inline-block icons-sm mr-1"><i class="uim uim-layers-alt"></i></div>
                         <span>Kelas</span>
                     </a>

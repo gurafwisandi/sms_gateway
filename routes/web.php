@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\KelasController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MatpelController;
 use App\Http\Controllers\SekolahController;
@@ -47,6 +48,13 @@ Route::group(
         Route::get('/sekolah_edit/{id}', [SekolahController::class, 'edit'])->name('admin.sekolah_edit');
         Route::post('/sekolah_update', [SekolahController::class, 'update'])->name('admin.sekolah_update');
         Route::delete('/sekolah_destroy', [SekolahController::class, 'destroy'])->name('admin.sekolah_destroy');
+        // kelas
+        Route::get('/kelas', [KelasController::class, 'index'])->name('admin.kelas');
+        Route::get('/kelas_add', [KelasController::class, 'add'])->name('admin.kelas_add');
+        Route::post('/kelas_store', [KelasController::class, 'store'])->name('admin.kelas_store');
+        Route::get('/kelas_edit/{id}', [KelasController::class, 'edit'])->name('admin.kelas_edit');
+        Route::post('/kelas_update', [KelasController::class, 'update'])->name('admin.kelas_update');
+        Route::delete('/kelas_destroy', [KelasController::class, 'destroy'])->name('admin.kelas_destroy');
         // matpel
         Route::get('/matpel', [MatpelController::class, 'index'])->name('admin.matpel');
         Route::get('/matpel_add', [MatpelController::class, 'add'])->name('admin.matpel_add');
