@@ -31,13 +31,19 @@
             <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img class="rounded-circle header-profile-user"
-                        src="{{ URL::asset('assets/images/users/avatar-1.jpg') }}" alt="Header Avatar">
+                    @if (Auth::user()->foto)
+                        <img class="rounded-circle header-profile-user"
+                            src="{{ asset('files/foto/' . Auth::user()->foto) }}" alt="Header Avatar">
+                    @else
+                        <img class="rounded-circle header-profile-user"
+                            src="{{ URL::asset('assets/images/users/avatar-1.jpg') }}" alt="Header Avatar">
+                    @endif
                     <span class="d-none d-sm-inline-block ml-1">{{ ucwords(strtolower(Auth::user()->name)) }}</span>
                     <i class="mdi mdi-chevron-down d-none d-sm-inline-block"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="#"><i
+                    <?php $id = Crypt::encryptString(Auth::user()->id); ?>
+                    <a class="dropdown-item" href="{{ route('admin.user_profile', ['id' => $id]) }}"><i
                             class="mdi mdi-face-profile font-size-16 align-middle mr-1"></i> Profile</a>
                     <div class="dropdown-divider"></div>
                     <form class="logout" action="{{ route('login.logout') }}" method="POST">

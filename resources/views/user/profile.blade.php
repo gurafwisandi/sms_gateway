@@ -19,7 +19,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <form class="custom-validation" action="{{ route('admin.user_update') }}"
+                                <form class="custom-validation" action="{{ route('admin.user_update_profile') }}"
                                     enctype="multipart/form-data" method="POST">
                                     @csrf
                                     <input type="hidden" class="id" id="id" name="id"
@@ -81,20 +81,9 @@
                                             </select>
                                             <small class="text-danger">{{ $errors->first('roles') }}</small>
                                         </div>
-                                        <div class="col-sm-6">
-                                            <div class="mt-4 mt-sm-0">
-                                                <h5 class="font-size-14 mb-3">Status</h5>
-                                                <div class="custom-control custom-checkbox mb-2">
-                                                    <input type="checkbox" class="custom-control-input" name="status"
-                                                        value="aktif" {{ $list->status ? 'checked' : '' }}
-                                                        id="customCheck1">
-                                                    <label class="custom-control-label" for="customCheck1">Aktif</label>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                     <div class="mt-4">
-                                        <a href="{{ route('admin.user') }}" class="btn btn-secondary waves-effect">
+                                        <a href="{{ route('dashboard') }}" class="btn btn-secondary waves-effect">
                                             Kembali
                                         </a>
                                         <button type="submit" class="btn btn-primary waves-effect waves-light mr-1">

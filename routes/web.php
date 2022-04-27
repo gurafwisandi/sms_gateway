@@ -71,6 +71,9 @@ Route::group(
         Route::get('/user_edit/{id}', [UserController::class, 'edit'])->name('admin.user_edit');
         Route::post('/user_update', [UserController::class, 'update'])->name('admin.user_update');
         Route::delete('/user_destroy', [UserController::class, 'destroy'])->name('admin.user_destroy');
+        // profile
+        Route::get('/user_profile/{id}', [UserController::class, 'profile'])->name('admin.user_profile');
+        Route::post('/user_update_profile', [UserController::class, 'update_profile'])->name('admin.user_update_profile');
         // siswa
         Route::get('/siswa', [SiswaController::class, 'index'])->name('admin.siswa');
         Route::get('/siswa_add', [SiswaController::class, 'add'])->name('admin.siswa_add');

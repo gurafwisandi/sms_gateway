@@ -19,7 +19,8 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <form class="custom-validation" action="{{ route('admin.user_store') }}" method="POST">
+                                <form class="custom-validation" action="{{ route('admin.user_store') }}"
+                                    enctype="multipart/form-data" method="POST">
                                     @csrf
                                     <div class="row">
                                         <div class="col-sm-6">
@@ -49,6 +50,18 @@
                                                 <small class="text-danger">{{ $errors->first('password') }}</small>
                                             </div>
                                         </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Foto</label>
+                                                <div class="custom-file">
+                                                    <input type="file" class="form-control" id="validationCustomFile"
+                                                        name="foto">
+                                                </div>
+                                                <small class="text-danger">{{ $errors->first('foto') }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-sm-6">
                                             <label>Roles</label>
                                             <select class="form-control" name="roles" required>

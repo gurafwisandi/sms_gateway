@@ -20,7 +20,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-6">
-                                        <h5>Data User</h5>
+                                        <h5>Data Akun</h5>
                                         <div class="mt-4">
                                             <a href="{{ route('admin.user') }}" class="btn btn-primary btn-sm">View more
                                                 <i class="mdi mdi-arrow-right ml-1"></i></a>
@@ -28,7 +28,7 @@
                                     </div>
                                     <div class="col-5 ml-auto">
                                         <div>
-                                            <h1 class="display-4">999</h1>
+                                            <h1 class="display-4">{{ count($akun) }}</h1>
                                         </div>
                                     </div>
                                 </div>
@@ -42,13 +42,13 @@
                                     <div class="col-6">
                                         <h5>Data Guru</h5>
                                         <div class="mt-4">
-                                            <a href="{{ route('admin.user') }}" class="btn btn-primary btn-sm">View more
+                                            <a href="{{ route('admin.guru') }}" class="btn btn-primary btn-sm">View more
                                                 <i class="mdi mdi-arrow-right ml-1"></i></a>
                                         </div>
                                     </div>
                                     <div class="col-5 ml-auto">
                                         <div>
-                                            <h1 class="display-4">999</h1>
+                                            <h1 class="display-4">{{ count($guru) }}</h1>
                                         </div>
                                     </div>
                                 </div>
@@ -62,13 +62,13 @@
                                     <div class="col-6">
                                         <h5>Data Siswa</h5>
                                         <div class="mt-4">
-                                            <a href="{{ route('admin.user') }}" class="btn btn-primary btn-sm">View more
+                                            <a href="{{ route('admin.siswa') }}" class="btn btn-primary btn-sm">View more
                                                 <i class="mdi mdi-arrow-right ml-1"></i></a>
                                         </div>
                                     </div>
                                     <div class="col-5 ml-auto">
                                         <div>
-                                            <h1 class="display-4">999</h1>
+                                            <h1 class="display-4">{{ count($siswa) }}</h1>
                                         </div>
                                     </div>
                                 </div>
@@ -91,7 +91,7 @@
                                         </div>
                                     </div>
                                 </form>
-                                <h5 class="header-title mb-4">Sales Report</h5>
+                                <h5 class="header-title mb-4">Absensi</h5>
                                 <div id="yearly-sale-chart" class="apex-charts"></div>
                             </div>
                         </div>
