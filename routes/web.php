@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GuruController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MatpelController;
 use App\Http\Controllers\SekolahController;
+use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -69,5 +71,21 @@ Route::group(
         Route::get('/user_edit/{id}', [UserController::class, 'edit'])->name('admin.user_edit');
         Route::post('/user_update', [UserController::class, 'update'])->name('admin.user_update');
         Route::delete('/user_destroy', [UserController::class, 'destroy'])->name('admin.user_destroy');
+        // siswa
+        Route::get('/siswa', [SiswaController::class, 'index'])->name('admin.siswa');
+        Route::get('/siswa_add', [SiswaController::class, 'add'])->name('admin.siswa_add');
+        Route::post('/siswa_store', [SiswaController::class, 'store'])->name('admin.siswa_store');
+        Route::get('/siswa_edit/{id}', [SiswaController::class, 'edit'])->name('admin.siswa_edit');
+        Route::post('/siswa_update', [SiswaController::class, 'update'])->name('admin.siswa_update');
+        Route::get('/siswa_view/{id}', [SiswaController::class, 'view'])->name('admin.siswa_view');
+        Route::delete('/siswa_destroy', [SiswaController::class, 'destroy'])->name('admin.siswa_destroy');
+        // guru
+        Route::get('/guru', [GuruController::class, 'index'])->name('admin.guru');
+        Route::get('/guru_add', [GuruController::class, 'add'])->name('admin.guru_add');
+        Route::post('/guru_store', [GuruController::class, 'store'])->name('admin.guru_store');
+        Route::get('/guru_edit/{id}', [GuruController::class, 'edit'])->name('admin.guru_edit');
+        Route::post('/guru_update', [GuruController::class, 'update'])->name('admin.guru_update');
+        Route::get('/guru_view/{id}', [GuruController::class, 'view'])->name('admin.guru_view');
+        Route::delete('/guru_destroy', [GuruController::class, 'destroy'])->name('admin.guru_destroy');
     }
 );

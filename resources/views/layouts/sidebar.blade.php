@@ -26,7 +26,7 @@
                 </li>
                 <li>
                     <a href="{{ route('admin.matpel') }}" class=" waves-effect">
-                        <div class="d-inline-block icons-sm mr-1"><i class="uim uim-layers-alt"></i></div>
+                        <div class="d-inline-block icons-sm mr-1"><i class="uim uim-grids"></i></div>
                         <span>Mata Pelajaran</span>
                     </a>
                 </li>
@@ -37,13 +37,13 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class=" waves-effect">
+                    <a href="{{ route('admin.siswa') }}" class=" waves-effect">
                         <div class="d-inline-block icons-sm mr-1"><i class="uim uim-list-ul"></i></div>
                         <span>Siswa</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="waves-effect">
+                    <a href="{{ route('admin.guru') }}" class="waves-effect">
                         <div class="d-inline-block icons-sm mr-1"><i class="uim uim-layer-group"></i></div>
                         <span>Guru</span>
                     </a>

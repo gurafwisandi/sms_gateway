@@ -12,7 +12,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="float-right">
-                            <a href="{{ route('admin.user_add') }}" class="btn btn-light btn-rounded dropdown-toggle">
+                            <a href="{{ route('admin.guru_add') }}" class="btn btn-light btn-rounded dropdown-toggle">
                                 <i class="mdi mdi mdi-plus-thick mr-1"></i> Tambah
                             </a>
                         </div>
@@ -32,10 +32,10 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Roles</th>
-                                            <th>Status</th>
+                                            <th>Nis</th>
+                                            <th>Nama Lengkap</th>
+                                            <th>Jenis Kelamin</th>
+                                            <th>Kelas</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -43,27 +43,24 @@
                                         @foreach ($lists as $list)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $list->name }}</td>
-                                                <td>{{ $list->email }}</td>
-                                                <td>{{ $list->roles }}</td>
-                                                <td>
-                                                    @if ($list->status === 'Aktif')
-                                                        <span
-                                                            class="badge badge-pill badge-primary">{{ $list->status }}</span>
-                                                    @else
-                                                        <span
-                                                            class="badge badge-pill badge-danger">{{ $list->status }}</span>
-                                                    @endif
-                                                </td>
+                                                <td>{{ $list->nis }}</td>
+                                                <td>{{ $list->nama }}</td>
+                                                <td>{{ $list->jenis_kelamin }}</td>
+                                                <td>{{ isset($list->kelas->kelas) ? $list->kelas->kelas : '' }}</td>
                                                 <td>
                                                     <?php $id = Crypt::encryptString($list->id); ?>
                                                     <form class="delete-form"
-                                                        action="{{ route('admin.user_destroy', ['id' => $id]) }}"
+                                                        action="{{ route('admin.guru_destroy', ['id' => $id]) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                         <div class="btn-group" role="group">
-                                                            <a href="{{ route('admin.user_edit', ['id' => $id]) }}"
+                                                            <a href="{{ route('admin.guru_view', ['id' => $id]) }}"
+                                                                class="btn btn-info btn-sm" data-toggle="tooltip"
+                                                                data-placement="top" title="View">
+                                                                <i class="mdi mdi-eye"></i>
+                                                            </a>
+                                                            <a href="{{ route('admin.guru_edit', ['id' => $id]) }}"
                                                                 class="btn btn-warning btn-sm" data-toggle="tooltip"
                                                                 data-placement="top" title="Edit">
                                                                 <i class="mdi mdi-pencil"></i>
