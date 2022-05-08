@@ -78,6 +78,9 @@
                                                     Admin</option>
                                                 <option value="Guru" {{ $list->roles === 'Guru' ? 'selected' : '' }}>Guru
                                                 </option>
+                                                <option value="Siswa" {{ $list->roles === 'Siswa' ? 'selected' : '' }}>
+                                                    Siswa
+                                                </option>
                                             </select>
                                             <small class="text-danger">{{ $errors->first('roles') }}</small>
                                         </div>

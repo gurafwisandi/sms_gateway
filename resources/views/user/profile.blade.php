@@ -69,7 +69,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row" hidden>
                                         <div class="col-sm-6">
                                             <label>Roles</label>
                                             <select name="roles" class="form-control" required>

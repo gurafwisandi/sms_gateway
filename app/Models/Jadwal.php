@@ -6,14 +6,24 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Siswa extends Model
+class Jadwal extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $table = "siswa";
+    protected $table = "jadwal";
 
     public function kelas()
     {
         return $this->belongsTo(Kelas::class, 'id_kelas');
+    }
+
+    public function matpel()
+    {
+        return $this->belongsTo(Matpel::class, 'id_matpel');
+    }
+
+    public function guru()
+    {
+        return $this->belongsTo(Guru::class, 'id_guru');
     }
 
     public function user()

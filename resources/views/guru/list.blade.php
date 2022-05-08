@@ -12,9 +12,11 @@
                     </div>
                     <div class="col-md-4">
                         <div class="float-right">
-                            <a href="{{ route('admin.guru_add') }}" class="btn btn-light btn-rounded dropdown-toggle">
-                                <i class="mdi mdi mdi-plus-thick mr-1"></i> Tambah
-                            </a>
+                            @if ($cek < 1)
+                                <a href="{{ route('admin.guru_add') }}" class="btn btn-light btn-rounded dropdown-toggle">
+                                    <i class="mdi mdi mdi-plus-thick mr-1"></i> Tambah
+                                </a>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -35,7 +37,7 @@
                                             <th>Nis</th>
                                             <th>Nama Lengkap</th>
                                             <th>Jenis Kelamin</th>
-                                            <th>Kelas</th>
+                                            <th>Wali Kelas</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -65,11 +67,14 @@
                                                                 data-placement="top" title="Edit">
                                                                 <i class="mdi mdi-pencil"></i>
                                                             </a>
-                                                            <button type="button"
-                                                                class="btn btn-danger btn-sm delete_confirm"
-                                                                data-toggle="tooltip" data-placement="top" title="Delete">
-                                                                <i class="mdi mdi-trash-can"></i>
-                                                            </button>
+                                                            @if (Auth::user()->roles === 'Admin')
+                                                                <button type="button"
+                                                                    class="btn btn-danger btn-sm delete_confirm"
+                                                                    data-toggle="tooltip" data-placement="top"
+                                                                    title="Delete">
+                                                                    <i class="mdi mdi-trash-can"></i>
+                                                                </button>
+                                                            @endif
                                                         </div>
                                                     </form>
                                                 </td>

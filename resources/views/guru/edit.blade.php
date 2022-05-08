@@ -80,7 +80,7 @@
                                             <small class="text-danger">{{ $errors->first('id_user') }}</small>
                                         </div>
                                         <div class="col-sm-6">
-                                            <label>Kelas</label>
+                                            <label>Wali Kelas</label>
                                             <select class="form-control" name="id_kelas">
                                                 <option value="">-- Pilih --</option>
                                                 @foreach ($kelas as $item)
@@ -91,6 +91,7 @@
                                             </select>
                                             <small class="text-danger">{{ $errors->first('id_kelas') }}</small>
                                         </div>
+                                        <input type="hidden" name="id_kelas_old" value="{{ $list->id_kelas }}">
                                     </div>
                                     <div class="mt-4">
                                         <a href="{{ route('admin.guru') }}" class="btn btn-secondary waves-effect">

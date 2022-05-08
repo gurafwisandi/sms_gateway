@@ -16,10 +16,16 @@ class GuruController extends Controller
     protected $menu = 'guru';
     public function index()
     {
+        if (Auth::user()->roles === 'Admin') {
+            $list = Guru::all();
+        } else {
+            $list = Guru::where('id_user', Auth::user()->id)->get();
+        }
         $data = [
             'menu' => $this->menu,
             'title' => 'List',
-            'lists' => Guru::all(),
+            'lists' => $list,
+            'cek' => $list->count()
         ];
         return view('guru.list')->with($data);
     }
@@ -41,13 +47,24 @@ class GuruController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nis' => 'required|integer|unique:guru,nis',
+            'nis' => 'required|numeric|unique:guru,nis',
             'nama_lengkap' => 'required',
             'jenis_kelamin' => 'required',
             'alamat' => 'required',
             'id_user' => 'required',
         ]);
-        // TODO : validasi kelas tidak bisa duplicat dan kecuali sudah deleted_at
+        // validasi kelas tidak bisa duplicat dan kecuali sudah deleted_at
+        $cek_kelas = Guru::where('id_kelas', $request->id_kelas)->count();
+        if ($cek_kelas > 0) {
+            $request->validate([
+                'nis' => 'required|numeric|unique:guru,nis',
+                'nama_lengkap' => 'required',
+                'jenis_kelamin' => 'required',
+                'alamat' => 'required',
+                'id_user' => 'required',
+                'id_kelas' => 'unique:guru,id_kelas'
+            ]);
+        }
         DB::beginTransaction();
         try {
             $guru = new guru();
@@ -90,13 +107,27 @@ class GuruController extends Controller
     {
         $request->validate([
             // validasi unique table guru, field guru, where id
-            'nis' => 'required|integer|unique:guru,nis,' . $request->id,
+            'nis' => 'required|numeric|unique:guru,nis,' . $request->id,
             'nama_lengkap' => 'required',
             'jenis_kelamin' => 'required',
             'alamat' => 'required',
             'id_user' => 'required',
         ]);
         // TODO : validasi kelas tidak bisa duplicat dan kecuali sudah deleted_at
+        // validasi kelas tidak bisa duplicat dan kecuali sudah deleted_at
+        if (isset($request->id_kelas) and $request->id_kelas_old != $request->id_kelas) {
+            $cek_kelas = Guru::where('id_kelas', $request->id_kelas)->count();
+            if ($cek_kelas > 0) {
+                $request->validate([
+                    'nis' => 'required|numeric|unique:guru,nis,' . $request->id,
+                    'nama_lengkap' => 'required',
+                    'jenis_kelamin' => 'required',
+                    'alamat' => 'required',
+                    'id_user' => 'required',
+                    'id_kelas' => 'unique:guru,id_kelas'
+                ]);
+            }
+        }
         DB::beginTransaction();
         try {
             $guru = guru::findorfail($request->id);

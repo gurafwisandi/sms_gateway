@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GuruController;
+use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MatpelController;
@@ -90,5 +91,13 @@ Route::group(
         Route::post('/guru_update', [GuruController::class, 'update'])->name('admin.guru_update');
         Route::get('/guru_view/{id}', [GuruController::class, 'view'])->name('admin.guru_view');
         Route::delete('/guru_destroy', [GuruController::class, 'destroy'])->name('admin.guru_destroy');
+        // jadwal
+        Route::get('/jadwal', [JadwalController::class, 'index'])->name('admin.jadwal');
+        Route::get('/jadwal_add', [JadwalController::class, 'add'])->name('admin.jadwal_add');
+        Route::post('/jadwal_store', [JadwalController::class, 'store'])->name('admin.jadwal_store');
+        Route::get('/jadwal_edit/{id}', [JadwalController::class, 'edit'])->name('admin.jadwal_edit');
+        Route::post('/jadwal_update', [JadwalController::class, 'update'])->name('admin.jadwal_update');
+        Route::get('/jadwal_view/{id}', [JadwalController::class, 'view'])->name('admin.jadwal_view');
+        Route::delete('/jadwal_destroy', [JadwalController::class, 'destroy'])->name('admin.jadwal_destroy');
     }
 );

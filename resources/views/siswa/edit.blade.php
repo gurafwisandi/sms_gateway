@@ -71,7 +71,9 @@
                                             <div class="form-group">
                                                 <label>Nama Ayah</label>
                                                 <input type="text" class="form-control" name="nama_ayah" required
-                                                    value="{{ $list->nama_ayah }}" placeholder="Nama Ayah" />
+                                                    value="{{ $list->nama_ayah }}"
+                                                    oninput="this.value = this.value.toUpperCase()"
+                                                    placeholder="Nama Ayah" />
                                                 <small class="text-danger">{{ $errors->first('nama_ayah') }}</small>
                                             </div>
                                         </div>
@@ -92,7 +94,9 @@
                                             <div class="form-group">
                                                 <label>Nama Ibu</label>
                                                 <input type="text" class="form-control" name="nama_ibu" required
-                                                    value="{{ $list->nama_ibu }}" placeholder="Nama Ayah" />
+                                                    value="{{ $list->nama_ibu }}"
+                                                    oninput="this.value = this.value.toUpperCase()"
+                                                    placeholder="Nama Ibu" />
                                                 <small class="text-danger">{{ $errors->first('nama_ibu') }}</small>
                                             </div>
                                         </div>
@@ -128,6 +132,17 @@
                                                 @endforeach
                                             </select>
                                             <small class="text-danger">{{ $errors->first('id_kelas') }}</small>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label>User</label>
+                                            <select class="form-control" name="id_user" required>
+                                                <option value="{{ $list->user->id }}">
+                                                    {{ $list->user->name . ' - ' . $list->user->email }}
+                                                </option>
+                                            </select>
+                                            <small class="text-danger">{{ $errors->first('id_user') }}</small>
                                         </div>
                                     </div>
                                     <div class="mt-4">

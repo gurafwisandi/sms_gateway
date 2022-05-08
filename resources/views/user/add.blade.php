@@ -68,6 +68,7 @@
                                                 <option value="">-- Pilih --</option>
                                                 <option value="Admin">Admin</option>
                                                 <option value="Guru">Guru</option>
+                                                <option value="Siswa">Siswa</option>
                                             </select>
                                             <small class="text-danger">{{ $errors->first('roles') }}</small>
                                         </div>

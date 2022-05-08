@@ -80,7 +80,7 @@
                                             <small class="text-danger">{{ $errors->first('id_user') }}</small>
                                         </div>
                                         <div class="col-sm-6">
-                                            <label>Kelas</label>
+                                            <label>Wali Kelas</label>
                                             <select class="form-control" name="id_kelas" disabled>
                                                 <option value="">-- Pilih --</option>
                                                 @foreach ($kelas as $item)

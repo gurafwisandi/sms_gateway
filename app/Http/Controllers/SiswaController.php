@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Helper\AlertHelper;
+use App\Models\Guru;
 use App\Models\Kelas;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 
@@ -14,18 +16,36 @@ class SiswaController extends Controller
     protected $menu = 'siswa';
     public function index()
     {
+        if (Auth::user()->roles === 'Guru') {
+            $guru = Guru::where('id_user', Auth::user()->id)->get();
+            $list = Siswa::where('id_kelas', $guru[0]->id_kelas)->get();
+            $cek = 1;
+        } elseif (Auth::user()->roles === 'Admin') {
+            $list = Siswa::all();
+            $cek = 0;
+        } elseif (Auth::user()->roles === 'Siswa') {
+            $list = Siswa::where('id_user', Auth::user()->id)->get();
+            $cek = $list->count();
+        }
         $data = [
             'menu' => $this->menu,
             'title' => 'List',
-            'lists' => Siswa::all(),
+            'lists' => $list,
+            'cek' => $cek
         ];
         return view('siswa.list')->with($data);
     }
     public function add()
     {
+        $user = DB::table('users')
+            ->select('id', 'name', 'email')
+            ->where('roles', 'Siswa')
+            ->whereNotIn('id', DB::table('siswa')->select('id_user')->wherenull('deleted_at'))
+            ->get();
         $data = [
             'menu' => $this->menu,
             'title' => 'Tambah',
+            'user' => $user,
             'kelas' => Kelas::all(),
         ];
         return view('siswa.add')->with($data);
@@ -33,7 +53,7 @@ class SiswaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nis' => 'required|integer|unique:siswa,nis',
+            'nis' => 'required|numeric|unique:siswa,nis',
             'nama_lengkap' => 'required',
             'jenis_kelamin' => 'required',
             'alamat' => 'required',
@@ -41,7 +61,8 @@ class SiswaController extends Controller
             'pekerjaan_ayah' => 'required',
             'nama_ibu' => 'required',
             'pekerjaan_ibu' => 'required',
-            'no_tlp' => 'required|integer',
+            'no_tlp' => 'required|numeric|unique:siswa,no_tlp',
+            'id_user' => 'required',
         ]);
         DB::beginTransaction();
         try {
@@ -56,6 +77,7 @@ class SiswaController extends Controller
             $siswa->pekerjaan_ibu = $request->pekerjaan_ibu;
             $siswa->no_tlp = $request->no_tlp;
             $siswa->id_kelas = $request->id_kelas;
+            $siswa->id_user = $request->id_user;
             $siswa->save();
 
             DB::commit();
@@ -82,7 +104,7 @@ class SiswaController extends Controller
     {
         $request->validate([
             // validasi unique table siswa, field siswa, where id
-            'nis' => 'required|integer|unique:siswa,nis,' . $request->id,
+            'nis' => 'required|numeric|unique:siswa,nis,' . $request->id,
             'nama_lengkap' => 'required',
             'jenis_kelamin' => 'required',
             'alamat' => 'required',
@@ -90,7 +112,8 @@ class SiswaController extends Controller
             'pekerjaan_ayah' => 'required',
             'nama_ibu' => 'required',
             'pekerjaan_ibu' => 'required',
-            'no_tlp' => 'required|integer',
+            'no_tlp' => 'required|numeric|unique:siswa,no_tlp,' . $request->id,
+            'id_user' => 'required',
         ]);
         DB::beginTransaction();
         try {
@@ -105,6 +128,7 @@ class SiswaController extends Controller
             $siswa->pekerjaan_ibu = $request->pekerjaan_ibu;
             $siswa->no_tlp = $request->no_tlp;
             $siswa->id_kelas = $request->id_kelas;
+            $siswa->id_user = $request->id_user;
             $siswa->save();
 
             DB::commit();

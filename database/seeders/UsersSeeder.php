@@ -23,9 +23,16 @@ class UsersSeeder extends Seeder
                 'status' => 'Aktif',
             ],
             [
-                'name' => 'ini akun User (non admin)',
-                'email' => 'user@gmail.com',
+                'name' => 'ini akun Guru (Guru)',
+                'email' => 'guru@gmail.com',
                 'roles' => 'Guru',
+                'status' => 'Aktif',
+                'password' => bcrypt('12345'),
+            ],
+            [
+                'name' => 'siswa',
+                'email' => 'siswa@gmail.com',
+                'roles' => 'Siswa',
                 'status' => 'Aktif',
                 'password' => bcrypt('12345'),
             ],
