@@ -29,17 +29,33 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th>Kelas</th>
-                                            <th>Mata Pelajaran</th>
-                                            <th>Guru</th>
-                                            <th>Hari</th>
-                                            <th>Jam Mulai</th>
-                                            <th>Jam Selesai</th>
+                                            <th>Tanggal</th>
+                                            <th>Jumlah Hadir</th>
+                                            <th>Jumlah Tidak Hadir</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($lists as $list)
+                                        <tr>
+                                            <td>1</td>
+                                            <td>{{ now() }}</td>
+                                            <td>32</td>
+                                            <td>2</td>
+                                            <td>
+                                                <?php
+                                                $id = 1;
+                                                #$id = Crypt::encryptString($list->id);
+                                                ?>
+                                                <div class="btn-group" role="group">
+                                                    <a href="{{ route('admin.absensi_siswa', ['id' => $id]) }}"
+                                                        class="btn btn-success btn-sm" data-toggle="tooltip"
+                                                        data-placement="top" title="Absensi Siswa">
+                                                        <i class="mdi mdi-account-multiple-check-outline"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {{-- @foreach ($lists as $list)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $list->kelas->kelas }}</td>
@@ -64,7 +80,7 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                        @endforeach
+                                        @endforeach --}}
                                     </tbody>
                                 </table>
                             </div>

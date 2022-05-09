@@ -34,7 +34,28 @@ class AbsensiController extends Controller
         ];
         return view('absensi.list')->with($data);
     }
-
+    public function history_absensi($id)
+    {
+        $data = [
+            'menu' => $this->menu,
+            'title' => 'History Absensi',
+            'kelas' => Kelas::all(),
+            'guru' => Guru::all(),
+            'matpel' => Matpel::all(),
+        ];
+        return view('absensi.list_absensi')->with($data);
+    }
+    public function absensi_siswa($id)
+    {
+        $data = [
+            'menu' => $this->menu,
+            'title' => 'Absensi Siswa',
+            'kelas' => Kelas::all(),
+            'guru' => Guru::all(),
+            'matpel' => Matpel::all(),
+        ];
+        return view('absensi.history')->with($data);
+    }
 
 
 

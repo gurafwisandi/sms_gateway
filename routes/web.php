@@ -101,6 +101,8 @@ Route::group(
         Route::delete('/jadwal_destroy', [JadwalController::class, 'destroy'])->name('admin.jadwal_destroy');
         // absensi
         Route::get('/absensi', [AbsensiController::class, 'index'])->name('admin.absensi');
+        Route::get('/history_absensi/{id}', [AbsensiController::class, 'history_absensi'])->name('admin.history_absensi');
+        Route::get('/absensi_siswa/{id}', [AbsensiController::class, 'absensi_siswa'])->name('admin.absensi_siswa');
         // Route::get('/absensi_add', [AbsensiController::class, 'add'])->name('admin.absensi_add');
         // Route::post('/absensi_store', [AbsensiController::class, 'store'])->name('admin.absensi_store');
         // Route::get('/absensi_edit/{id}', [AbsensiController::class, 'edit'])->name('admin.absensi_edit');
