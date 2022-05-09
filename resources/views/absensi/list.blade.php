@@ -12,12 +12,6 @@
                     </div>
                     <div class="col-md-4">
                         <div class="float-right">
-                            @if (Auth::user()->roles === 'Admin')
-                                <a href="{{ route('admin.jadwal_add') }}"
-                                    class="btn btn-light btn-rounded dropdown-toggle">
-                                    <i class="mdi mdi mdi-plus-thick mr-1"></i> Tambah
-                                </a>
-                            @endif
                         </div>
                     </div>
                 </div>
@@ -41,9 +35,7 @@
                                             <th>Hari</th>
                                             <th>Jam Mulai</th>
                                             <th>Jam Selesai</th>
-                                            @if (Auth::user()->roles === 'Admin')
-                                                <th>Aksi</th>
-                                            @endif
+                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -56,30 +48,21 @@
                                                 <td>{{ $list->hari }}</td>
                                                 <td>{{ $list->jam_mulai }}</td>
                                                 <td>{{ $list->jam_selesai }}</td>
-                                                @if (Auth::user()->roles === 'Admin')
-                                                    <td>
-                                                        <?php $id = Crypt::encryptString($list->id); ?>
-                                                        <form class="delete-form"
-                                                            action="{{ route('admin.jadwal_destroy', ['id' => $id]) }}"
-                                                            method="POST">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <div class="btn-group" role="group">
-                                                                <a href="{{ route('admin.jadwal_edit', ['id' => $id]) }}"
-                                                                    class="btn btn-warning btn-sm" data-toggle="tooltip"
-                                                                    data-placement="top" title="Edit">
-                                                                    <i class="mdi mdi-pencil"></i>
-                                                                </a>
-                                                                <button type="button"
-                                                                    class="btn btn-danger btn-sm delete_confirm"
-                                                                    data-toggle="tooltip" data-placement="top"
-                                                                    title="Delete">
-                                                                    <i class="mdi mdi-trash-can"></i>
-                                                                </button>
-                                                            </div>
-                                                        </form>
-                                                    </td>
-                                                @endif
+                                                <td>
+                                                    <?php $id = Crypt::encryptString($list->id); ?>
+                                                    <div class="btn-group" role="group">
+                                                        <a href="{{ route('admin.jadwal_edit', ['id' => $id]) }}"
+                                                            class="btn btn-primary btn-sm" data-toggle="tooltip"
+                                                            data-placement="top" title="Absensi">
+                                                            <i class="mdi mdi-barcode-scan"></i>
+                                                        </a>
+                                                        <a href="{{ route('admin.jadwal_edit', ['id' => $id]) }}"
+                                                            class="btn btn-info btn-sm" data-toggle="tooltip"
+                                                            data-placement="top" title="History Absensi">
+                                                            <i class="mdi mdi-history"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -92,7 +75,7 @@
         </div>
     </div>
     <script src="{{ asset('assets/libs/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('assets/alert.js') }}"></script>
+    {{-- <script src="{{ asset('assets/alert.js') }}"></script>
     <script>
         $('.delete_confirm').on('click', function(event) {
             event.preventDefault();
@@ -110,5 +93,5 @@
                 }
             });
         });
-    </script>
+    </script> --}}
 @endsection

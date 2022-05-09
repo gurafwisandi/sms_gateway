@@ -5,7 +5,7 @@
         <div id="sidebar-menu">
             <!-- Left Menu Start -->
             <ul class="metismenu list-unstyled" id="side-menu">
-                <li class="menu-title">Menu</li>
+                <li class="menu-title">Menu - {{ Auth::user()->roles . '-' . Auth::user()->id }}</li>
                 <li>
                     <a href="{{ route('dashboard') }}" class="waves-effect">
                         <div class="d-inline-block icons-sm mr-1"><i class="uim uim-airplay"></i></div>
@@ -56,7 +56,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class=" waves-effect">
+                        <a href="{{ route('admin.absensi') }}" class=" waves-effect">
                             <div class="d-inline-block icons-sm mr-1"><i class="uim uim-schedule"></i></div>
                             <span>Absensi</span>
                         </a>
@@ -85,11 +85,35 @@
                             <span>Guru</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('admin.jadwal') }}" class=" waves-effect">
+                            <div class="d-inline-block icons-sm mr-1"><i class="uim uim-clock-eight"></i></div>
+                            <span>Jadwal</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.absensi') }}" class=" waves-effect">
+                            <div class="d-inline-block icons-sm mr-1"><i class="uim uim-schedule"></i></div>
+                            <span>Absensi</span>
+                        </a>
+                    </li>
                 @elseif (Auth::user()->roles === 'Siswa')
                     <li>
                         <a href="{{ route('admin.siswa') }}" class=" waves-effect">
                             <div class="d-inline-block icons-sm mr-1"><i class="uim uim-list-ul"></i></div>
                             <span>Siswa</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.jadwal') }}" class=" waves-effect">
+                            <div class="d-inline-block icons-sm mr-1"><i class="uim uim-clock-eight"></i></div>
+                            <span>Jadwal</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.absensi') }}" class=" waves-effect">
+                            <div class="d-inline-block icons-sm mr-1"><i class="uim uim-schedule"></i></div>
+                            <span>Absensi</span>
                         </a>
                     </li>
                 @endif

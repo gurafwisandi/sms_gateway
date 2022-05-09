@@ -89,7 +89,7 @@
                                                 <h5 class="font-size-14 mb-3">Status</h5>
                                                 <div class="custom-control custom-checkbox mb-2">
                                                     <input type="checkbox" class="custom-control-input" name="status"
-                                                        value="aktif" {{ $list->status ? 'checked' : '' }}
+                                                        value="aktif" {{ $list->status === 'Aktif' ? 'checked' : '' }}
                                                         id="customCheck1">
                                                     <label class="custom-control-label" for="customCheck1">Aktif</label>
                                                 </div>

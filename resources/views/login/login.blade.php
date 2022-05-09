@@ -21,7 +21,6 @@
 
 <body class="bg-primary bg-pattern">
     <div class="home-btn d-none d-sm-block">
-        <a href="index.html"><i class="mdi mdi-home-variant h2 text-white"></i></a>
     </div>
 
     <div class="account-pages my-5 pt-sm-5">
@@ -29,7 +28,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center mb-5">
-                        <a href="index.html" class="logo"><img src="assets/images/logo-light.png" height="24"
+                        <a href="#" class="logo"><img src="assets/images/logo-light.png" height="24"
                                 alt="logo"></a>
                         <h5 class="font-size-16 text-white-50 mb-4">Responsive Bootstrap 4 Admin Dashboard</h5>
                     </div>
@@ -60,12 +59,12 @@
                                         <div class="col-md-12">
                                             <div class="form-group form-group-custom mb-4">
                                                 <input type="text" name="email" class="form-control" id="email"
-                                                    required>
+                                                    autocomplete="off" required>
                                                 <label for="email">Email</label>
                                             </div>
                                             <div class="form-group form-group-custom mb-4">
                                                 <input type="password" name="password" class="form-control"
-                                                    id="userpassword" required>
+                                                    autocomplete="off" id="userpassword" required>
                                                 <label for="userpassword">Password</label>
                                             </div>
                                             <div class="mt-4">

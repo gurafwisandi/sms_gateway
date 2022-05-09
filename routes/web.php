@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\JadwalController;
@@ -97,7 +98,14 @@ Route::group(
         Route::post('/jadwal_store', [JadwalController::class, 'store'])->name('admin.jadwal_store');
         Route::get('/jadwal_edit/{id}', [JadwalController::class, 'edit'])->name('admin.jadwal_edit');
         Route::post('/jadwal_update', [JadwalController::class, 'update'])->name('admin.jadwal_update');
-        Route::get('/jadwal_view/{id}', [JadwalController::class, 'view'])->name('admin.jadwal_view');
         Route::delete('/jadwal_destroy', [JadwalController::class, 'destroy'])->name('admin.jadwal_destroy');
+        // absensi
+        Route::get('/absensi', [AbsensiController::class, 'index'])->name('admin.absensi');
+        // Route::get('/absensi_add', [AbsensiController::class, 'add'])->name('admin.absensi_add');
+        // Route::post('/absensi_store', [AbsensiController::class, 'store'])->name('admin.absensi_store');
+        // Route::get('/absensi_edit/{id}', [AbsensiController::class, 'edit'])->name('admin.absensi_edit');
+        // Route::post('/absensi_update', [AbsensiController::class, 'update'])->name('admin.absensi_update');
+        // Route::get('/absensi_view/{id}', [AbsensiController::class, 'view'])->name('admin.absensi_view');
+        // Route::delete('/absensi_destroy', [AbsensiController::class, 'destroy'])->name('admin.absensi_destroy');
     }
 );
