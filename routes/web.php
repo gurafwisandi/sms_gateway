@@ -101,13 +101,11 @@ Route::group(
         Route::delete('/jadwal_destroy', [JadwalController::class, 'destroy'])->name('admin.jadwal_destroy');
         // absensi
         Route::get('/absensi', [AbsensiController::class, 'index'])->name('admin.absensi');
-        Route::get('/history_absensi/{id}', [AbsensiController::class, 'history_absensi'])->name('admin.history_absensi');
+        Route::get('/absensi_kehadiran/{id}', [AbsensiController::class, 'absensi_kehadiran'])->name('admin.absensi_kehadiran');
+        Route::post('/absensi_mulai/{id}', [AbsensiController::class, 'absensi_mulai'])->name('admin.absensi_mulai');
+        Route::post('/absensi_selesai/{id}', [AbsensiController::class, 'absensi_selesai'])->name('admin.absensi_selesai');
+        Route::post('/history_absensi/{id}', [AbsensiController::class, 'history_absensi'])->name('admin.history_absensi');
         Route::get('/absensi_siswa/{id}', [AbsensiController::class, 'absensi_siswa'])->name('admin.absensi_siswa');
-        // Route::get('/absensi_add', [AbsensiController::class, 'add'])->name('admin.absensi_add');
-        // Route::post('/absensi_store', [AbsensiController::class, 'store'])->name('admin.absensi_store');
-        // Route::get('/absensi_edit/{id}', [AbsensiController::class, 'edit'])->name('admin.absensi_edit');
-        // Route::post('/absensi_update', [AbsensiController::class, 'update'])->name('admin.absensi_update');
-        // Route::get('/absensi_view/{id}', [AbsensiController::class, 'view'])->name('admin.absensi_view');
-        // Route::delete('/absensi_destroy', [AbsensiController::class, 'destroy'])->name('admin.absensi_destroy');
+        Route::post('/qrcode_siswa', [AbsensiController::class, 'qrcode_siswa'])->name('admin.qrcode_siswa');
     }
 );

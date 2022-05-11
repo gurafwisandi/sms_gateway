@@ -17,8 +17,10 @@ class CreateAbsensi extends Migration
             $table->id();
             $table->unsignedBigInteger('id_jadwal');
             $table->foreign('id_jadwal')->references('id')->on('jadwal');
-            $table->unsignedBigInteger('id_siswa');
+            $table->unsignedBigInteger('id_siswa')->nullable();
             $table->foreign('id_siswa')->references('id')->on('siswa');
+            $table->unsignedBigInteger('id_guru')->nullable();
+            $table->foreign('id_guru')->references('id')->on('guru');
             $table->string('type');
             $table->string('kehadiran');
             $table->timestamps();

@@ -98,8 +98,9 @@ class KelasController extends Controller
             AlertHelper::addAlert(true);
             return redirect('admin/kelas');
         } catch (\Exception $e) {
-            dd($e);
             DB::rollback();
+            AlertHelper::deleteAlert(false);
+            return back();
             // something went wrong
         }
     }

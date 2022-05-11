@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helper\AlertHelper;
+use App\Models\Absensi;
 use App\Models\Guru;
 use App\Models\Jadwal;
 use App\Models\Kelas;
@@ -34,6 +35,142 @@ class AbsensiController extends Controller
         ];
         return view('absensi.list')->with($data);
     }
+    public function absensi_kehadiran($id)
+    {
+        $data = [
+            'menu' => $this->menu,
+            'title' => 'Absensi',
+            'lists' => Absensi::where('created_at', 'LIKE', '%' . date('Y-m-d') . '%')->get(),
+            'id' => $id,
+            'barcode' => Jadwal::findorfail(Crypt::decryptString($id)),
+            'last_mulai' => Absensi::select('created_at')->where('type', 'Guru')->where('kehadiran', 'Mulai')->orderBy('created_at', 'DESC')->limit(1)->get(),
+            'last_selesai' => Absensi::select('created_at')->where('type', 'Guru')->where('kehadiran', 'Selesai')->orderBy('created_at', 'DESC')->limit(1)->get(),
+        ];
+        return view('absensi.absensi_kehadiran')->with($data);
+    }
+    public function absensi_mulai(Request $request, $id)
+    {
+        DB::beginTransaction();
+        try {
+            $id = Crypt::decryptString($id);
+            $guru = Guru::where('id_user', Auth::user()->id)->get();
+
+            $jadwal = new Absensi;
+            $jadwal->id_jadwal = $id;
+            $jadwal->id_guru = $guru[0]->id;
+            $jadwal->type = 'Guru';
+            $jadwal->kehadiran = 'Mulai';
+            $jadwal->save();
+
+            DB::commit();
+            AlertHelper::addAlert(true);
+            return back();
+        } catch (\Exception $e) {
+            DB::rollback();
+            AlertHelper::deleteAlert(false);
+            return back();
+            // something went wrong
+        }
+    }
+    public function absensi_selesai(Request $request, $id)
+    {
+        DB::beginTransaction();
+        try {
+            $id = Crypt::decryptString($id);
+            $guru = Guru::where('id_user', Auth::user()->id)->get();
+
+            $jadwal = new Absensi;
+            $jadwal->id_jadwal = $id;
+            $jadwal->id_guru = $guru[0]->id;
+            $jadwal->type = 'Guru';
+            $jadwal->kehadiran = 'Selesai';
+            $jadwal->save();
+
+            DB::commit();
+            AlertHelper::addAlert(true);
+            return back();
+        } catch (\Exception $e) {
+            DB::rollback();
+            AlertHelper::deleteAlert(false);
+            return back();
+            // something went wrong
+        }
+    }
+    public function qrcode_siswa(Request $request)
+    {
+        $data = explode("|", Crypt::decryptString($request->decodedText));
+        $id_jadwal = $data[0];
+        $id_guru = $data[1];
+        // cek jadwal
+        $cek_jadwal = Jadwal::findorfail($id_jadwal);
+        $day = date('D', strtotime(now()));
+        $dayList = [
+            'Sun' => 'Minggu',
+            'Mon' => 'Senin',
+            'Tue' => 'Selasa',
+            'Wed' => 'Rabu',
+            'Thu' => 'Kamis',
+            'Fri' => 'Jumat',
+            'Sat' => 'Sabtu',
+        ];
+        if (strtoupper($dayList[$day]) !== $cek_jadwal->hari) {
+            return response()->json([
+                'code' => 404,
+                'message' => 'Absensi hanya bisa dilakukan pada hari ' . $cek_jadwal->hari,
+            ]);
+        }
+
+        // cek absensi
+        $siswa = Siswa::select('id')->where('id_user', Auth::user()->id)->get();
+        $now = date('Y-m-d', strtotime(now()));
+        $cek_absensi = Absensi::where('id_jadwal', $id_jadwal)
+            ->where('id_siswa', $siswa[0]->id)
+            ->where('created_at', 'Like', '%' . $now . '%')
+            ->get();
+        if (count($cek_absensi) > 0) {
+            return response()->json([
+                'code' => 404,
+                'id' => Crypt::encryptString($id_jadwal),
+                'message' => 'Sudah melakukan absensi pada tanggal ' . date('d M Y H:i:s', strtotime($cek_absensi[0]->created_at)),
+            ]);
+        }
+
+        DB::beginTransaction();
+        try {
+            $jadwal = new Absensi;
+            $jadwal->id_jadwal = $id_jadwal;
+            $jadwal->id_siswa = $siswa[0]->id;
+            $jadwal->type = 'Siswa';
+            $jadwal->kehadiran = 'Hadir';
+            $jadwal->save();
+
+            // TODO :: proses SMS GATEWAY
+
+            DB::commit();
+            return response()->json([
+                'code' => 200,
+                'id' => Crypt::encryptString($id_jadwal),
+                'message' => 'Berhasil Simpan',
+            ]);
+        } catch (\Exception $e) {
+            dd($e);
+            DB::rollback();
+            return response()->json([
+                'code' => 404,
+                'id' => Crypt::encryptString($id_jadwal),
+                'message' => 'Gagal Simpan',
+            ]);
+        }
+    }
+
+
+
+
+
+
+
+
+
     public function history_absensi($id)
     {
         $data = [
@@ -50,172 +187,7 @@ class AbsensiController extends Controller
         $data = [
             'menu' => $this->menu,
             'title' => 'Absensi Siswa',
-            'kelas' => Kelas::all(),
-            'guru' => Guru::all(),
-            'matpel' => Matpel::all(),
         ];
         return view('absensi.history')->with($data);
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public function add()
-    {
-        $data = [
-            'menu' => $this->menu,
-            'title' => 'Tambah',
-            'kelas' => Kelas::all(),
-            'guru' => Guru::all(),
-            'matpel' => Matpel::all(),
-        ];
-        return view('absensi.add')->with($data);
-    }
-    public function store(Request $request)
-    {
-        $id_kelas = $request->id_kelas;
-        $id_matpel = $request->id_matpel;
-        $id_guru = $request->id_guru;
-        $jam_mulai = $request->jam_mulai;
-        $jam_selesai = $request->jam_selesai;
-        $hari = $request->hari;
-
-        $cek = DB::table('jadwal')
-            ->selectRaw('count(id) as jml')
-            ->where('id_kelas', $id_kelas)
-            ->where('id_matpel', $id_matpel)
-            ->where('id_guru', $id_guru)
-            ->where('jam_mulai', $jam_mulai)
-            ->where('jam_selesai', $jam_selesai)
-            ->where('hari', $hari)
-            ->whereNull('deleted_at')
-            ->get();
-        if ($cek[0]->jml > 0) {
-            return response()->json([
-                'code' => 404,
-                'message' => 'Jadwal sudah ada',
-            ]);
-        }
-
-        DB::beginTransaction();
-        try {
-            $jadwal = new Jadwal;
-            $jadwal->id_kelas = $id_kelas;
-            $jadwal->id_matpel = $id_matpel;
-            $jadwal->id_guru = $id_guru;
-            $jadwal->jam_mulai = $jam_mulai;
-            $jadwal->jam_selesai = $jam_selesai;
-            $jadwal->hari = $hari;
-            $jadwal->save();
-
-            DB::commit();
-            // all good
-            return response()->json([
-                'code' => 200,
-                'message' => 'berhasil',
-            ]);
-        } catch (\Exception $e) {
-            DB::rollback();
-            // something went wrong
-            return response()->json([
-                'code' => 404,
-                'message' => 'Gagal disimpan',
-            ]);
-        }
-    }
-    public function destroy(Request $request)
-    {
-        $id = Crypt::decryptString($request->id);
-        DB::beginTransaction();
-        try {
-            $jadwal = jadwal::findorfail($id);
-            $jadwal->delete();
-
-            DB::commit();
-            AlertHelper::deleteAlert(true);
-            return back();
-        } catch (\Throwable $err) {
-            DB::rollBack();
-            AlertHelper::deleteAlert(false);
-            return back();
-        }
-    }
-    public function edit(Request $request)
-    {
-        $id = Crypt::decryptString($request->id);
-        $data = [
-            'menu' => $this->menu,
-            'title' => 'edit',
-            'kelas' => Kelas::all(),
-            'guru' => Guru::all(),
-            'matpel' => Matpel::all(),
-            'list' => jadwal::findorfail($id)
-        ];
-        return view('absensi.edit')->with($data);
-    }
-    public function update(Request $request)
-    {
-        $id_kelas = $request->id_kelas;
-        $id_matpel = $request->id_matpel;
-        $id_guru = $request->id_guru;
-        $jam_mulai = $request->jam_mulai;
-        $jam_selesai = $request->jam_selesai;
-        $hari = $request->hari;
-
-        $cek = DB::table('jadwal')
-            ->selectRaw('count(id) as jml')
-            ->where('id_kelas', $id_kelas)
-            ->where('id_matpel', $id_matpel)
-            ->where('id_guru', $id_guru)
-            ->where('jam_mulai', $jam_mulai)
-            ->where('jam_selesai', $jam_selesai)
-            ->where('hari', $hari)
-            ->whereNull('deleted_at')
-            ->get();
-        if ($cek[0]->jml > 0) {
-            return response()->json([
-                'code' => 404,
-                'message' => 'Jadwal sudah ada',
-            ]);
-        }
-
-        DB::beginTransaction();
-        try {
-            $jadwal = jadwal::findorfail($request->id);
-            $jadwal->id_kelas = $id_kelas;
-            $jadwal->id_matpel = $id_matpel;
-            $jadwal->id_guru = $id_guru;
-            $jadwal->jam_mulai = $jam_mulai;
-            $jadwal->jam_selesai = $jam_selesai;
-            $jadwal->hari = $hari;
-            $jadwal->save();
-
-            DB::commit();
-            // all good
-            return response()->json([
-                'code' => 200,
-                'message' => 'berhasil',
-            ]);
-        } catch (\Exception $e) {
-            DB::rollback();
-            // something went wrong
-            return response()->json([
-                'code' => 404,
-                'message' => 'Gagal disimpan',
-            ]);
-        }
     }
 }

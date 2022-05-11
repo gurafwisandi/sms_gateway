@@ -51,11 +51,25 @@
                                                 <td>
                                                     <?php $id = Crypt::encryptString($list->id); ?>
                                                     <div class="btn-group" role="group">
-                                                        <a href="{{ route('admin.jadwal_edit', ['id' => $id]) }}"
-                                                            class="btn btn-primary btn-sm" data-toggle="tooltip"
-                                                            data-placement="top" title="Absensi">
-                                                            <i class="mdi mdi-barcode-scan"></i>
-                                                        </a>
+                                                        <?php
+                                                        $day = date('D', strtotime(now()));
+                                                        $dayList = [
+                                                            'Sun' => 'Minggu',
+                                                            'Mon' => 'Senin',
+                                                            'Tue' => 'Selasa',
+                                                            'Wed' => 'Rabu',
+                                                            'Thu' => 'Kamis',
+                                                            'Fri' => 'Jumat',
+                                                            'Sat' => 'Sabtu',
+                                                        ];
+                                                        ?>
+                                                        @if (strtoupper($dayList[$day]) === $list->hari)
+                                                            <a href="{{ route('admin.absensi_kehadiran', ['id' => $id]) }}"
+                                                                class="btn btn-primary btn-sm" data-toggle="tooltip"
+                                                                data-placement="top" title="Absensi">
+                                                                <i class="mdi mdi-barcode-scan"></i>
+                                                            </a>
+                                                        @endif
                                                         <a href="{{ route('admin.history_absensi', ['id' => $id]) }}"
                                                             class="btn btn-info btn-sm" data-toggle="tooltip"
                                                             data-placement="top" title="History Absensi">
