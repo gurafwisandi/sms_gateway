@@ -29,60 +29,48 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
+                                            <th>Hari</th>
                                             <th>Tanggal</th>
+                                            <th>Jumlah Siswa</th>
                                             <th>Jumlah Hadir</th>
                                             <th>Jumlah Tidak Hadir</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>{{ now() }}</td>
-                                            <td>32</td>
-                                            <td>2</td>
-                                            <td>
-                                                <?php
-                                                $id = 1;
-                                                #$id = Crypt::encryptString($list->id);
-                                                ?>
-                                                <div class="btn-group" role="group">
-                                                    <a href="{{ route('admin.absensi_siswa', ['id' => $id]) }}"
-                                                        class="btn btn-success btn-sm" data-toggle="tooltip"
-                                                        data-placement="top" title="Absensi Siswa">
-                                                        <i class="mdi mdi-account-multiple-check-outline"></i>
-                                                    </a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        {{-- @foreach ($lists as $list)
+                                        @foreach ($lists as $list)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $list->kelas->kelas }}</td>
-                                                <td>{{ $list->matpel->matpel }}</td>
-                                                <td>{{ $list->guru->nama }}</td>
                                                 <td>{{ $list->hari }}</td>
-                                                <td>{{ $list->jam_mulai }}</td>
-                                                <td>{{ $list->jam_selesai }}</td>
+                                                <td>{{ date('d F Y', strtotime($list->created_at)) }}</td>
+                                                <td>{{ $list->hadir + $list->tidak_hadir }}</td>
+                                                <td>{{ $list->hadir }}</td>
+                                                <td>{{ $list->tidak_hadir }}</td>
                                                 <td>
-                                                    <?php $id = Crypt::encryptString($list->id); ?>
+                                                    <?php
+                                                    $id = Crypt::encryptString($list->id);
+                                                    ?>
                                                     <div class="btn-group" role="group">
-                                                        <a href="{{ route('admin.jadwal_edit', ['id' => $id]) }}"
-                                                            class="btn btn-primary btn-sm" data-toggle="tooltip"
-                                                            data-placement="top" title="Absensi">
-                                                            <i class="mdi mdi-barcode-scan"></i>
-                                                        </a>
-                                                        <a href="{{ route('admin.history_absensi', ['id' => $id]) }}"
-                                                            class="btn btn-info btn-sm" data-toggle="tooltip"
-                                                            data-placement="top" title="History Absensi">
-                                                            <i class="mdi mdi-history"></i>
+                                                        <a href="{{ route('admin.absensi_siswa', ['id' => $id, 'hari' => $list->created_at]) }}"
+                                                            class="btn btn-success btn-sm" data-toggle="tooltip"
+                                                            data-placement="top" title="Absensi Siswa">
+                                                            <i class="mdi mdi-account-multiple-check-outline"></i>
                                                         </a>
                                                     </div>
                                                 </td>
                                             </tr>
-                                        @endforeach --}}
+                                        @endforeach
                                     </tbody>
                                 </table>
+                                <br>
+                                <div class="form-group mb-0">
+                                    <div>
+                                        <a href="{{ route('admin.absensi') }}" class="btn btn-secondary waves-effect">
+                                            Kembali
+                                        </a>
+                                    </div>
+                                </div>
+                                <br>
                             </div>
                         </div>
                     </div>

@@ -19,40 +19,26 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <form class="custom-validation" action="{{ route('admin.absensi_update') }}" method="POST"
-                                    novalidate>
+                                <form class="custom-validation" action="{{ route('admin.absensi_update_belum_absen') }}"
+                                    method="POST" novalidate>
                                     @csrf
-                                    <input type="hidden" name="id" value="{{ $list->id }}">
-                                    <input type="hidden" name="kehadiran_old" value="{{ $list->kehadiran }}">
-                                    <input type="hidden" name="id_jadwal" value="{{ $list->id_jadwal }}">
+                                    <input type="hidden" name="id_siswa" value="{{ $list->id }}">
+                                    <input type="hidden" name="id_jadwal" value="{{ $id_jadwal }}">
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label>Nama</label>
                                                 <input type="text" class="form-control" readonly
-                                                    value="{{ $list->siswa->nama_lengkap }}" />
+                                                    value="{{ $list->nama_lengkap }}" />
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label>Tanggal</label>
-                                                <input type="text" class="form-control" readonly
-                                                    value="{{ $list->created_at }}" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label>Kehadiran</label>
-                                                <select class="form-control" name="kehadiran" id="kehadiran">
-                                                    <option value="Hadir"
-                                                        {{ $list->kehadiran === 'Hadir' ? 'selected' : '' }}>Hadir
-                                                    </option>
-                                                    <option value="Tidak Hadir"
-                                                        {{ $list->kehadiran === 'Tidak Hadir' ? 'selected' : '' }}>Tidak
-                                                        Hadir
-                                                    </option>
+                                                <select class="form-control" name="kehadiran" id="kehadiran" required>
+                                                    <option value="">-- Pilih --</option>
+                                                    <option value="Hadir">Hadir</option>
+                                                    <option value="Tidak Hadir">Tidak Hadir</option>
                                                 </select>
                                                 <small class="text-danger">{{ $errors->first('kehadiran') }}</small>
                                             </div>
@@ -60,8 +46,7 @@
                                     </div>
                                     <div class="form-group mb-0">
                                         <div>
-                                            <?php $idjadwal = Crypt::encryptString($list->id_jadwal); ?>
-                                            <a href="{{ route('admin.absensi_kehadiran', ['id' => $idjadwal]) }}"
+                                            <a href="{{ route('admin.belum_absensi', ['id' => $id_jadwal]) }}"
                                                 class="btn btn-secondary waves-effect">
                                                 Kembali
                                             </a>

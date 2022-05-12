@@ -22,11 +22,16 @@
                                                 data-toggle="modal" data-target=".bs-example-modal-center"><i
                                                     class="mdi mdi-qrcode-scan"></i> Barcode Siswa
                                                 Absensi</button>
-                                            <button type="button"
-                                                class="btn btn-light btn-rounded dropdown-toggle absensi_selesai"
-                                                data-toggle="tooltip" data-placement="top" title="Guru Selesai Mengajar">
-                                                <i class="mdi mdi-account-multiple-check-outline"></i> Guru Selesai Mengajar
-                                            </button>
+
+                                            @if ($jml_kelas === $lists->where('type', 'Siswa')->count())
+                                                <button type="button"
+                                                    class="btn btn-light btn-rounded dropdown-toggle absensi_selesai"
+                                                    data-toggle="tooltip" data-placement="top"
+                                                    title="Guru Selesai Mengajar">
+                                                    <i class="mdi mdi-account-multiple-check-outline"></i> Guru Selesai
+                                                    Mengajar
+                                                </button>
+                                            @endif
                                         </form>
                                     @elseif (date('Y-m-d', strtotime($last_selesai[0]->created_at)) !== date('Y-m-d'))
                                         <form class="delete-form"
@@ -40,15 +45,17 @@
                                         </form>
                                     @endif
                                 @elseif (count($last_mulai) > 0 and count($last_selesai) < 1)
-                                    <form class="delete-form"
-                                        action="{{ route('admin.absensi_selesai', ['id' => $id]) }}" method="POST">
-                                        @csrf
-                                        <button type="button"
-                                            class="btn btn-light btn-rounded dropdown-toggle absensi_selesai"
-                                            data-toggle="tooltip" data-placement="top" title="Guru Selesai Mengajar">
-                                            <i class="mdi mdi-account-multiple-check-outline"></i> Guru Selesai Mengajar
-                                        </button>
-                                    </form>
+                                    @if ($jml_kelas === $lists->where('type', 'Siswa')->count())
+                                        <form class="delete-form"
+                                            action="{{ route('admin.absensi_selesai', ['id' => $id]) }}" method="POST">
+                                            @csrf
+                                            <button type="button"
+                                                class="btn btn-light btn-rounded dropdown-toggle absensi_selesai"
+                                                data-toggle="tooltip" data-placement="top" title="Guru Selesai Mengajar">
+                                                <i class="mdi mdi-account-multiple-check-outline"></i> Guru Selesai Mengajar
+                                            </button>
+                                        </form>
+                                    @endif
                                 @else
                                     <form class="delete-form"
                                         action="{{ route('admin.absensi_mulai', ['id' => $id]) }}" method="POST">
@@ -78,11 +85,95 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="card border mb-0">
+                                        <div class="card-body">
+                                            <div class="text-center">
+                                                <div class="icons-xl uim-icon-primary my-4">
+                                                    <i class="uim uim-schedule"></i>
+                                                </div>
+                                                <h4 class="alert-heading font-size-20">
+                                                    <?php
+                                                    $hadir = $lists
+                                                        ->where('type', 'Siswa')
+                                                        ->where('kehadiran', 'Hadir')
+                                                        ->count();
+                                                    $tidak_hadir = $lists
+                                                        ->where('type', 'Siswa')
+                                                        ->where('kehadiran', 'Tidak Hadir')
+                                                        ->count();
+                                                    $belum_absensi = $jml_kelas - $hadir - $tidak_hadir;
+                                                    ?>
+                                                    {{ $jml_kelas }}
+                                                </h4>
+                                                <p class="text-muted">Jumlah Siswa</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="card border mb-0">
+                                        <div class="card-body">
+                                            <div class="text-center">
+                                                <div class="icons-xl uim-icon-success my-4">
+                                                    <i class="uim uim-check-circle"></i>
+                                                </div>
+                                                <h4 class="alert-heading font-size-20">
+                                                    {{ $hadir }}
+                                                </h4>
+                                                <p class="text-muted">Hadir</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    @if ($belum_absensi > 0)
+                                        <?php $url = route('admin.belum_absensi', ['id' => $id]); ?>
+                                    @else
+                                        <?php $url = '#'; ?>
+                                    @endif
+                                    <a href="{{ $url }}" data-toggle="tooltip" data-placement="top"
+                                        title="Belum Absensi">
+                                        <div class="card noti border mt-4 mt-lg-0 mb-0">
+                                            <div class="card-body">
+                                                <div class="text-center">
+                                                    <div class="icons-xl uim-icon-warning my-4">
+                                                        <i class="uim uim-exclamation-triangle"></i>
+                                                    </div>
+                                                    <h4 class="alert-heading font-size-20">
+                                                        {{ $belum_absensi }}
+                                                    </h4>
+                                                    <p class="text-muted">Belum Absensi</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="card noti border mt-4 mt-lg-0 mb-0">
+                                        <div class="card-body">
+                                            <div class="text-center">
+                                                <div class="icons-xl uim-icon-danger my-4">
+                                                    <i class="uim uim-times-circle"></i>
+                                                </div>
+                                                <h4 class="alert-heading font-size-20">
+                                                    {{ $tidak_hadir }}
+                                                </h4>
+                                                <p class="text-muted">Tidak Hadir</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
                             <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap"
                                 style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead>
                                     <tr>
                                         <th>No</th>
+                                        <th>Kelas</th>
+                                        <th>Hari</th>
                                         <th>Nama</th>
                                         <th>Type</th>
                                         <th>Tanggal</th>
@@ -94,36 +185,46 @@
                                     @foreach ($lists as $list)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $list->jadwal->kelas->kelas }}</td>
+                                            <td>{{ $list->jadwal->hari }}</td>
                                             <td>{{ $list->id_guru ? $list->guru->nama : $list->siswa->nama_lengkap }}
                                             </td>
                                             <td>{{ $list->type }}</td>
                                             <td>{{ $list->created_at }}</td>
                                             <td>{{ $list->kehadiran }}</td>
                                             <td>
-                                                {{-- <?php $id = Crypt::encryptString($list->id); ?>
+                                                @if ($list->type === 'Siswa' and Auth::user()->roles !== 'Siswa')
+                                                    <?php $id_list = Crypt::encryptString($list->id); ?>
                                                     <div class="btn-group" role="group">
-                                                        <a href="{{ route('admin.jadwal_edit', ['id' => $id]) }}"
-                                                            class="btn btn-primary btn-sm" data-toggle="tooltip"
-                                                            data-placement="top" title="Absensi">
-                                                            <i class="mdi mdi-barcode-scan"></i>
-                                                        </a>
-                                                        <a href="{{ route('admin.history_absensi', ['id' => $id]) }}"
+                                                        <a href="{{ route('admin.absensi_edit', ['id' => $id_list]) }}"
                                                             class="btn btn-info btn-sm" data-toggle="tooltip"
-                                                            data-placement="top" title="History Absensi">
-                                                            <i class="mdi mdi-history"></i>
+                                                            data-placement="top" title="Absensi">
+                                                            <i class="mdi mdi-pencil"></i>
                                                         </a>
-                                                    </div> --}}
+                                                    </div>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
+                            <br>
+                            <div class="form-group mb-0">
+                                <div>
+                                    <a href="{{ route('admin.absensi') }}" class="btn btn-secondary waves-effect">
+                                        Kembali
+                                    </a>
+                                </div>
+                            </div>
+                            <br>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    {{-- barcode absensi --}}
     <?php preg_match('/(chrome|firefox|avantgo|blackberry|android|blazer|elaine|hiptop|iphone|ipod|kindle|midp|mmp|mobile|o2|opera mini|palm|palm os|pda|plucker|pocket|psp|smartphone|symbian|treo|up.browser|up.link|vodafone|wap|windows ce; iemobile|windows ce; ppc;|windows ce; smartphone;|xiino)/i', $_SERVER['HTTP_USER_AGENT'], $version); ?>
     <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
         aria-hidden="true">
@@ -147,7 +248,7 @@
     </div><!-- /.modal-dialog- -->
     </div><!-- /.modal-end -->
 
-
+    {{-- barcode absensi siswa --}}
     <div class="modal fade bs-example-modal-center-siswa" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -167,6 +268,8 @@
             </div>
         </div>
     </div>
+
+    {{-- JS --}}
     <script src="{{ asset('assets/libs/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/alert.js') }}"></script>
     {{-- js qrcode --}}
@@ -203,7 +306,7 @@
                                 Swal.fire(
                                     'Berhasil',
                                     `${response.message}`,
-                                    'error',
+                                    'success',
                                 ).then(function() {
                                     window.location = APP_URL + '/admin/absensi_kehadiran/' +
                                         response.id

@@ -16,14 +16,14 @@ class UsersSeeder extends Seeder
     {
         $user = [
             [
-                'name' => 'ini akun Admin',
+                'name' => 'Admin',
                 'email' => 'admin@gmail.com',
                 'roles' => 'Admin',
                 'password' => bcrypt('12345'),
                 'status' => 'Aktif',
             ],
             [
-                'name' => 'ini akun Guru (Guru)',
+                'name' => 'Guru',
                 'email' => 'guru@gmail.com',
                 'roles' => 'Guru',
                 'status' => 'Aktif',

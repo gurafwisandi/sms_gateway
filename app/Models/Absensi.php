@@ -20,4 +20,9 @@ class Absensi extends Model
     {
         return $this->belongsTo(Siswa::class, 'id_siswa');
     }
+
+    public function jadwal()
+    {
+        return $this->belongsTo(Jadwal::class, 'id_jadwal');
+    }
 }

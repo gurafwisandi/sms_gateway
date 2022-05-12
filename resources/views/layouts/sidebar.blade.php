@@ -5,7 +5,7 @@
         <div id="sidebar-menu">
             <!-- Left Menu Start -->
             <ul class="metismenu list-unstyled" id="side-menu">
-                <li class="menu-title">Menu - {{ Auth::user()->roles . '-' . Auth::user()->id }}</li>
+                <li class="menu-title">Menu - {{ Auth::user()->roles }}</li>
                 <li>
                     <a href="{{ route('dashboard') }}" class="waves-effect">
                         <div class="d-inline-block icons-sm mr-1"><i class="uim uim-airplay"></i></div>
