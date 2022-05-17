@@ -34,12 +34,21 @@ class AlertHelper
         }
     }
 
-    public static function addPayment($info)
+    public static function kontakAlert($info)
     {
         if ($info) {
-            Alert::success('Berhasil', 'Berhasil dibayar');
+            Alert::success('Berhasil', 'Berhasil');
         } else {
-            Alert::error('Gagal', 'Gagal dibayar');
+            Alert::error('Gagal', 'Kontak kosong, Gagal Notifikasi');
+        }
+    }
+
+    public static function saldoAlert($info)
+    {
+        if ($info) {
+            Alert::success('Berhasil', 'Berhasil');
+        } else {
+            Alert::error('Gagal', 'Saldo habis');
         }
     }
 }

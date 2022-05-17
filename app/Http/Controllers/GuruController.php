@@ -113,7 +113,6 @@ class GuruController extends Controller
             'alamat' => 'required',
             'id_user' => 'required',
         ]);
-        // TODO : validasi kelas tidak bisa duplicat dan kecuali sudah deleted_at
         // validasi kelas tidak bisa duplicat dan kecuali sudah deleted_at
         if (isset($request->id_kelas) and $request->id_kelas_old != $request->id_kelas) {
             $cek_kelas = Guru::where('id_kelas', $request->id_kelas)->count();

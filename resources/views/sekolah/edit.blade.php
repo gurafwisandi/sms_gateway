@@ -54,10 +54,25 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Notifikasi</label>
+                                                <select class="form-control" name="notifikasi" required>
+                                                    <option value="">-- Pilih --</option>
+                                                    @foreach ($notifikasi as $item)
+                                                        <option value="{{ $item->id }}"
+                                                            {{ $item->id === $list->id_api ? 'selected' : '' }}>
+                                                            {{ $item->notifikasi }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <small class="text-danger">{{ $errors->first('notifikasi') }}</small>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="form-group mb-0">
                                         <div>
-                                            <a href="{{ route('admin.matpel') }}" class="btn btn-secondary waves-effect">
+                                            <a href="{{ route('admin.sekolah') }}"
+                                                class="btn btn-secondary waves-effect">
                                                 Kembali
                                             </a>
                                             <button type="submit" class="btn btn-primary waves-effect waves-light mr-1">

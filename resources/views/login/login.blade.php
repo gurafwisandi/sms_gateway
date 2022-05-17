@@ -28,9 +28,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center mb-5">
-                        <a href="#" class="logo"><img src="assets/images/logo-light.png" height="24"
-                                alt="logo"></a>
-                        <h5 class="font-size-16 text-white-50 mb-4">Responsive Bootstrap 4 Admin Dashboard</h5>
+                        <a href="#" class="logo"><img
+                                src="{{ URL::asset('assets/images/logo_sekolah.png') }}" height="130" alt="logo"></a>
                     </div>
                 </div>
             </div>
@@ -41,7 +40,7 @@
                     <div class="card">
                         <div class="card-body p-4">
                             <div class="p-2">
-                                <h5 class="mb-5 text-center">Sign in to continue to Xoric.</h5>
+                                <h5 class="mb-5 text-center">Lembaga Pendidikan Ma`Arif.</h5>
                                 @if (count($errors) > 0)
                                     <div class="alert alert-danger" role="alert">
                                         Login Gagal!

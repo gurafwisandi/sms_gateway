@@ -223,7 +223,6 @@
             </div>
         </div>
     </div>
-
     {{-- barcode absensi --}}
     <?php preg_match('/(chrome|firefox|avantgo|blackberry|android|blazer|elaine|hiptop|iphone|ipod|kindle|midp|mmp|mobile|o2|opera mini|palm|palm os|pda|plucker|pocket|psp|smartphone|symbian|treo|up.browser|up.link|vodafone|wap|windows ce; iemobile|windows ce; ppc;|windows ce; smartphone;|xiino)/i', $_SERVER['HTTP_USER_AGENT'], $version); ?>
     <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
@@ -308,8 +307,11 @@
                                     `${response.message}`,
                                     'success',
                                 ).then(function() {
-                                    window.location = APP_URL + '/admin/absensi_kehadiran/' +
-                                        response.id
+                                    // window.location = APP_URL + '/admin/absensi_kehadiran/' +
+                                    //     response.id
+                                    // kirim notifikasi API
+                                    window.location = APP_URL + '/admin/notifikasi_kehadiran/' +
+                                        response.idx
                                 })
                             } else {
                                 Swal.fire(
@@ -321,7 +323,6 @@
                                         response.id
                                 })
                             }
-
                         },
                     })
                 }

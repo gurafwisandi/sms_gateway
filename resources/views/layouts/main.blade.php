@@ -28,9 +28,12 @@
     <!-- Responsive datatable examples -->
     <link href="{{ URL::asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}"
         rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('assets/loading.css') }}">
 </head>
 
 <body data-topbar="colored">
+    {{-- loading --}}
+    <div id="loader"></div>
     @include('sweetalert::alert')
     <!-- Begin page -->
     <div id="layout-wrapper">
@@ -79,6 +82,17 @@
     <script src="{{ asset('assets/libs/parsleyjs/parsley.min.js') }}"></script>
     <!-- validation init -->
     <script src="{{ asset('assets/js/pages/form-validation.init.js') }}"></script>
+    {{-- loading --}}
+    <script type="text/javascript">
+        var $loading = $('#loader').hide();
+        $(document)
+            .ajaxStart(function() {
+                $loading.show();
+            })
+            .ajaxStop(function() {
+                $loading.hide();
+            });
+    </script>
 </body>
 
 </html>

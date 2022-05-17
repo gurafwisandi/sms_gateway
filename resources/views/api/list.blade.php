@@ -12,12 +12,9 @@
                     </div>
                     <div class="col-md-4">
                         <div class="float-right">
-                            @if (count($lists) < 1)
-                                <a href="{{ route('admin.sekolah_add') }}"
-                                    class="btn btn-light btn-rounded dropdown-toggle">
-                                    <i class="mdi mdi mdi-plus-thick mr-1"></i> Tambah
-                                </a>
-                            @endif
+                            <a href="{{ route('admin.api_add') }}" class="btn btn-light btn-rounded dropdown-toggle">
+                                <i class="mdi mdi mdi-plus-thick mr-1"></i> Tambah
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -35,10 +32,10 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th>Kode Sekolah</th>
-                                            <th>Sekolah</th>
-                                            <th>Alamat</th>
-                                            <th>Notifikasi</th>
+                                            <th>API</th>
+                                            <th>URL</th>
+                                            <th>Userkey</th>
+                                            <th>Passkey</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -46,19 +43,19 @@
                                         @foreach ($lists as $list)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $list->kode }}</td>
-                                                <td>{{ $list->sekolah }}</td>
-                                                <td>{{ $list->alamat }}</td>
-                                                <td>{{ $list->id_api ? $list->api->notifikasi : '' }}</td>
+                                                <td>{{ $list->notifikasi }}</td>
+                                                <td>{{ $list->url }}</td>
+                                                <td>{{ $list->userkey }}</td>
+                                                <td>{{ $list->passkey }}</td>
                                                 <td>
                                                     <?php $id = Crypt::encryptString($list->id); ?>
                                                     <form class="delete-form"
-                                                        action="{{ route('admin.sekolah_destroy', ['id' => $id]) }}"
+                                                        action="{{ route('admin.api_destroy', ['id' => $id]) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                         <div class="btn-group" role="group">
-                                                            <a href="{{ route('admin.sekolah_edit', ['id' => $id]) }}"
+                                                            <a href="{{ route('admin.api_edit', ['id' => $id]) }}"
                                                                 class="btn btn-warning btn-sm" data-toggle="tooltip"
                                                                 data-placement="top" title="Edit">
                                                                 <i class="mdi mdi-pencil"></i>

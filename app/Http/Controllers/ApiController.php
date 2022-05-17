@@ -4,52 +4,50 @@ namespace App\Http\Controllers;
 
 use App\Helper\AlertHelper;
 use App\Models\Api;
-use App\Models\Sekolah;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 
-class SekolahController extends Controller
+class ApiController extends Controller
 {
-    protected $menu = 'sekolah';
+    protected $menu = 'api';
     public function index()
     {
         $data = [
             'menu' => $this->menu,
             'title' => 'List',
-            'lists' => Sekolah::all(),
+            'lists' => Api::all(),
         ];
-        return view('sekolah.list')->with($data);
+        return view('api.list')->with($data);
     }
     public function add()
     {
         $data = [
             'menu' => $this->menu,
             'title' => 'Tambah',
-            'notifikasi' => Api::all(),
         ];
-        return view('sekolah.add')->with($data);
+        return view('api.add')->with($data);
     }
     public function store(Request $request)
     {
         $request->validate([
-            'kode' => 'required|unique:sekolah',
-            'sekolah' => 'required|unique:sekolah',
-            'alamat' => 'required',
-            'notifikasi' => 'required',
+            'notifikasi' => 'required|unique:api',
+            'url' => 'required|unique:api',
+            'userkey' => 'required',
+            'passkey' => 'required',
         ]);
         DB::beginTransaction();
         try {
-            $sekolah = new Sekolah();
-            $sekolah->kode = $request->kode;
-            $sekolah->sekolah = $request->sekolah;
-            $sekolah->alamat = $request->alamat;
-            $sekolah->id_api = $request->notifikasi;
-            $sekolah->save();
+            $api = new api();
+            $api->notifikasi = $request->notifikasi;
+            $api->url = $request->url;
+            $api->userkey = $request->userkey;
+            $api->passkey = $request->passkey;
+            $api->save();
 
             DB::commit();
             AlertHelper::addAlert(true);
-            return redirect('admin/sekolah');
+            return redirect('admin/api');
         } catch (\Exception $e) {
             dd($e);
             DB::rollback();
@@ -61,8 +59,8 @@ class SekolahController extends Controller
         $id = Crypt::decryptString($request->id);
         DB::beginTransaction();
         try {
-            $sekolah = Sekolah::findorfail($id);
-            $sekolah->delete();
+            $api = api::findorfail($id);
+            $api->delete();
 
             DB::commit();
             AlertHelper::deleteAlert(true);
@@ -79,32 +77,31 @@ class SekolahController extends Controller
         $data = [
             'menu' => $this->menu,
             'title' => 'edit',
-            'list' => Sekolah::findorfail($id),
-            'notifikasi' => Api::all(),
+            'list' => api::findorfail($id)
         ];
-        return view('sekolah.edit')->with($data);
+        return view('api.edit')->with($data);
     }
     public function update(Request $request)
     {
         $request->validate([
             // validasi unique table, field, where id
-            'kode' => 'required|unique:sekolah,kode,' . $request->id,
-            'sekolah' => 'required|unique:sekolah,sekolah,' . $request->id,
-            'alamat' => 'required',
-            'notifikasi' => 'required',
+            'notifikasi' => 'required|unique:api,notifikasi,' . $request->id,
+            'url' => 'required|unique:api,url,' . $request->id,
+            'userkey' => 'required',
+            'passkey' => 'required',
         ]);
         DB::beginTransaction();
         try {
-            $sekolah = Sekolah::findorfail($request->id);
-            $sekolah->kode = $request->kode;
-            $sekolah->sekolah = $request->sekolah;
-            $sekolah->alamat = $request->alamat;
-            $sekolah->id_api = $request->notifikasi;
-            $sekolah->save();
+            $api = api::findorfail($request->id);
+            $api->notifikasi = $request->notifikasi;
+            $api->url = $request->url;
+            $api->userkey = $request->userkey;
+            $api->passkey = $request->passkey;
+            $api->save();
 
             DB::commit();
             AlertHelper::addAlert(true);
-            return redirect('admin/sekolah');
+            return redirect('admin/api');
         } catch (\Exception $e) {
             dd($e);
             DB::rollback();

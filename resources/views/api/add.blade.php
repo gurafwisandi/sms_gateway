@@ -19,53 +19,50 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <form class="custom-validation" action="{{ route('admin.sekolah_store') }}" method="POST">
+                                <form class="custom-validation" action="{{ route('admin.api_store') }}" method="POST">
                                     @csrf
                                     <div class="row">
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label>Kode</label>
-                                                <input type="text" class="form-control" name="kode" required
-                                                    oninput="this.value = this.value.toUpperCase()" placeholder="Kode" />
-                                                <small class="text-danger">{{ $errors->first('kode') }}</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label>Sekolah</label>
-                                                <input type="text" class="form-control" name="sekolah" required
-                                                    oninput="this.value = this.value.toUpperCase()" placeholder="Sekolah" />
-                                                <small class="text-danger">{{ $errors->first('sekolah') }}</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label>Alamat</label>
-                                                <div>
-                                                    <textarea required name="alamat" class="form-control" placeholder="Alamat" rows="5"></textarea>
-                                                    <small class="text-danger">{{ $errors->first('alamat') }}</small>
-                                                </div>
-                                            </div>
-                                        </div>
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label>Notifikasi</label>
                                                 <select class="form-control" name="notifikasi" required>
                                                     <option value="">-- Pilih --</option>
-                                                    @foreach ($notifikasi as $item)
-                                                        <option value="{{ $item->id }}">
-                                                            {{ $item->notifikasi }}</option>
-                                                    @endforeach
+                                                    <option value="SMS">SMS</option>
+                                                    <option value="WA">WhatsApp</option>
                                                 </select>
                                                 <small class="text-danger">{{ $errors->first('notifikasi') }}</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>URL</label>
+                                                <input type="text" class="form-control" name="url" required
+                                                    value="{{ old('url') }}" placeholder="URL" />
+                                                <small class="text-danger">{{ $errors->first('url') }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Userkey</label>
+                                                <input type="text" class="form-control" name="userkey" required
+                                                    value="{{ old('userkey') }}" placeholder="Userkey" />
+                                                <small class="text-danger">{{ $errors->first('userkey') }}</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Passkey</label>
+                                                <input type="text" class="form-control" name="passkey" required
+                                                    value="{{ old('passkey') }}" placeholder="Passkey" />
+                                                <small class="text-danger">{{ $errors->first('passkey') }}</small>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group mb-0">
                                         <div>
-                                            <a href="{{ route('admin.sekolah') }}" class="btn btn-secondary waves-effect">
+                                            <a href="{{ route('admin.api') }}" class="btn btn-secondary waves-effect">
                                                 Kembali
                                             </a>
                                             <button type="submit" class="btn btn-primary waves-effect waves-light mr-1">

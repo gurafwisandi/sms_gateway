@@ -10,4 +10,9 @@ class Sekolah extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = "sekolah";
+
+    public function api()
+    {
+        return $this->belongsTo(Api::class, 'id_api');
+    }
 }

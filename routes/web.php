@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\ApiController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\JadwalController;
@@ -45,6 +46,13 @@ Route::group(
         'middleware'     => 'auth'
     ],
     function () {
+        // api
+        Route::get('/api', [ApiController::class, 'index'])->name('admin.api');
+        Route::get('/api_add', [ApiController::class, 'add'])->name('admin.api_add');
+        Route::post('/api_store', [ApiController::class, 'store'])->name('admin.api_store');
+        Route::get('/api_edit/{id}', [ApiController::class, 'edit'])->name('admin.api_edit');
+        Route::post('/api_update', [ApiController::class, 'update'])->name('admin.api_update');
+        Route::delete('/api_destroy', [ApiController::class, 'destroy'])->name('admin.api_destroy');
         // sekolah
         Route::get('/sekolah', [SekolahController::class, 'index'])->name('admin.sekolah');
         Route::get('/sekolah_add', [SekolahController::class, 'add'])->name('admin.sekolah_add');
@@ -102,6 +110,7 @@ Route::group(
         // absensi
         Route::get('/absensi', [AbsensiController::class, 'index'])->name('admin.absensi');
         Route::get('/absensi_kehadiran/{id}', [AbsensiController::class, 'absensi_kehadiran'])->name('admin.absensi_kehadiran');
+        Route::get('/notifikasi_kehadiran/{id}', [AbsensiController::class, 'notifikasi_kehadiran'])->name('admin.notifikasi_kehadiran');
         Route::post('/absensi_mulai/{id}', [AbsensiController::class, 'absensi_mulai'])->name('admin.absensi_mulai');
         Route::post('/absensi_selesai/{id}', [AbsensiController::class, 'absensi_selesai'])->name('admin.absensi_selesai');
         Route::post('/qrcode_siswa', [AbsensiController::class, 'qrcode_siswa'])->name('admin.qrcode_siswa');

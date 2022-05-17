@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Helper\AlertHelper;
 use App\Models\Absensi;
+use App\Models\Api;
 use App\Models\Guru;
 use App\Models\Jadwal;
 use App\Models\Kelas;
 use App\Models\Matpel;
+use App\Models\Sekolah;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -138,6 +140,15 @@ class AbsensiController extends Controller
             ]);
         }
 
+        $cek_siswa = Siswa::findorfail($siswa[0]->id); // cek no tlp siswa
+        if ($cek_siswa->no_tlp === null or $cek_siswa->no_tlp === '') {
+            return response()->json([
+                'code' => 404,
+                'id' => Crypt::encryptString($id_jadwal),
+                'message' => 'Kontak kosong, Gagal Notifikasi',
+            ]);
+        }
+
         DB::beginTransaction();
         try {
             $jadwal = new Absensi;
@@ -146,14 +157,14 @@ class AbsensiController extends Controller
             $jadwal->type = 'Siswa';
             $jadwal->kehadiran = 'Hadir';
             $jadwal->save();
-
-            // TODO :: proses SMS GATEWAY
+            $idx = $jadwal->id;
 
             DB::commit();
             return response()->json([
                 'code' => 200,
                 'id' => Crypt::encryptString($id_jadwal),
                 'message' => 'Berhasil Simpan',
+                'idx' => $idx
             ]);
         } catch (\Exception $e) {
             dd($e);
@@ -164,6 +175,51 @@ class AbsensiController extends Controller
                 'message' => 'Gagal Simpan',
             ]);
         }
+    }
+    public function notifikasi_kehadiran($id)
+    {
+        $absensi = Absensi::findorfail($id);
+        // TODO belum selesai testing :: start kirim SMS GATEWAY / WA
+        $getBalance = $this->GetBalance(); // cek saldo
+        $data_jadwal = Jadwal::findorfail($absensi->id_jadwal); // jadwal siswa mencari mata pelajaran
+        if ($getBalance->original['code'] == 200) {
+            // user API
+            $userkey = $getBalance->original['userkey'];
+            $passkey = $getBalance->original['passkey'];
+            $url = $getBalance->original['url'];
+            // cari data siswa
+            $data_siswa = Siswa::findorfail($absensi->id_siswa);
+            $telepon = $data_siswa->no_tlp;
+            $message = 'Siswa a/n ' . $data_siswa->nama_lengkap
+                . ' pada tanggal ' . date('d F Y', strtotime($absensi->created_at))
+                . ' Hadir pada Mata Pelajaran ' . $data_jadwal->matpel->matpel;
+            // dd($message);
+            // $message .= '----------- zzzzzzzzzzzzzzzzzzzzzzz';
+            // CURL
+            $curlHandle = curl_init();
+            curl_setopt($curlHandle, CURLOPT_URL, $url);
+            curl_setopt($curlHandle, CURLOPT_HEADER, 0);
+            curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curlHandle, CURLOPT_SSL_VERIFYHOST, 2);
+            curl_setopt($curlHandle, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($curlHandle, CURLOPT_TIMEOUT, 30);
+            curl_setopt($curlHandle, CURLOPT_POST, 1);
+            curl_setopt($curlHandle, CURLOPT_POSTFIELDS, array(
+                'userkey' => $userkey,
+                'passkey' => $passkey,
+                'to' => $telepon,
+                'message' => $message
+            ));
+            $results = json_decode(curl_exec($curlHandle), true);
+            curl_close($curlHandle);
+
+
+            return redirect('admin/absensi_kehadiran/' . Crypt::encryptString($absensi->id_jadwal));
+        } else {
+            AlertHelper::saldoAlert(false);
+            return redirect('admin/absensi_kehadiran/' . Crypt::encryptString($absensi->id_jadwal));
+        }
+        // end kirim SMS GATTEWAY / WA
     }
     public function edit($id)
     {
@@ -180,15 +236,56 @@ class AbsensiController extends Controller
             'id_jadwal' => 'required',
             'kehadiran' => 'required',
         ]);
+        $cek_siswa = Absensi::findorfail($request->id); // cek no tlp siswa
+        if ($cek_siswa->siswa->no_tlp === null or $cek_siswa->siswa->no_tlp === '') {
+            AlertHelper::kontakAlert(false);
+            return back();
+        }
         DB::beginTransaction();
         try {
             $absensi = Absensi::findorfail($request->id);
+            $tgl_absensi = $absensi->created_at;
             $absensi->kehadiran = $request->kehadiran;
             $absensi->save();
 
             DB::commit();
             if ($request->kehadiran != $request->kehadiran_old) {
-                // TODO : kirim SMS GATEWAY
+                // TODO :: start kirim SMS GATEWAY / WA
+                $getBalance = $this->GetBalance(); // cek saldo
+                $absensi = Absensi::findorfail($request->id);
+                $data_siswa = Siswa::findorfail($absensi->id_siswa); // siswa
+                $data_jadwal = Jadwal::findorfail($absensi->id_jadwal); // jadwal siswa mencari mata pelajaran
+                if ($getBalance->original['code'] == 200) {
+                    // user API
+                    $userkey = $getBalance->original['userkey'];
+                    $passkey = $getBalance->original['passkey'];
+                    $url = $getBalance->original['url'];
+                    // cari data siswa
+                    $data_siswa = Siswa::findorfail($absensi->id_siswa);
+                    $telepon = $data_siswa->no_tlp;
+                    $message = 'Siswa a/n ' . $data_siswa->nama_lengkap
+                        . ' pada tanggal ' . date('d F Y', strtotime($tgl_absensi))
+                        . ' ' . $request->kehadiran
+                        . ' pada Mata Pelajaran ' . $data_jadwal->matpel->matpel;
+                    // CURL
+                    $curlHandle = curl_init();
+                    curl_setopt($curlHandle, CURLOPT_URL, $url);
+                    curl_setopt($curlHandle, CURLOPT_HEADER, 0);
+                    curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, 1);
+                    curl_setopt($curlHandle, CURLOPT_SSL_VERIFYHOST, 2);
+                    curl_setopt($curlHandle, CURLOPT_SSL_VERIFYPEER, 0);
+                    curl_setopt($curlHandle, CURLOPT_TIMEOUT, 30);
+                    curl_setopt($curlHandle, CURLOPT_POST, 1);
+                    curl_setopt($curlHandle, CURLOPT_POSTFIELDS, array(
+                        'userkey' => $userkey,
+                        'passkey' => $passkey,
+                        'to' => $telepon,
+                        'message' => $message
+                    ));
+                    $results = json_decode(curl_exec($curlHandle), true);
+                    curl_close($curlHandle);
+                }
+                // end kirim SMS GATTEWAY / WA
             }
             AlertHelper::addAlert(true);
             return redirect('admin/absensi_kehadiran/' . Crypt::encryptString($request->id_jadwal));
@@ -274,18 +371,58 @@ class AbsensiController extends Controller
             'id_jadwal' => 'required',
             'kehadiran' => 'required',
         ]);
+        $cek_siswa = Siswa::findorfail($request->id_siswa); // cek no tlp siswa
+        if ($cek_siswa->no_tlp === null or $cek_siswa->no_tlp === '') {
+            AlertHelper::kontakAlert(false);
+            return back();
+        }
         DB::beginTransaction();
         try {
             $absensi = new Absensi;
-            $absensi->id_jadwal = Crypt::decryptString($request->id_jadwal);
+            $id_jadwal = Crypt::decryptString($request->id_jadwal);
+            $absensi->id_jadwal = $id_jadwal;
             $absensi->id_siswa = $request->id_siswa;
             $absensi->type = 'Siswa';
             $absensi->kehadiran = $request->kehadiran;
             $absensi->save();
+            $tgl_absensi = $absensi->created_at;
 
             DB::commit();
-
-            // TODO : kirim SMS GATEWAY
+            // TODO :: start kirim SMS GATEWAY / WA
+            $getBalance = $this->GetBalance(); // cek saldo
+            $data_siswa = Siswa::findorfail($request->id_siswa); // siswa
+            $data_jadwal = Jadwal::findorfail($id_jadwal); // jadwal siswa mencari mata pelajaran
+            if ($getBalance->original['code'] == 200) {
+                // user API
+                $userkey = $getBalance->original['userkey'];
+                $passkey = $getBalance->original['passkey'];
+                $url = $getBalance->original['url'];
+                // cari data siswa
+                $data_siswa = Siswa::findorfail($request->id_siswa);
+                $telepon = $data_siswa->no_tlp;
+                $message = 'Siswa a/n ' . $data_siswa->nama_lengkap
+                    . ' pada tanggal ' . date('d F Y', strtotime($tgl_absensi))
+                    . ' ' . $request->kehadiran
+                    . ' pada Mata Pelajaran ' . $data_jadwal->matpel->matpel;
+                // CURL
+                $curlHandle = curl_init();
+                curl_setopt($curlHandle, CURLOPT_URL, $url);
+                curl_setopt($curlHandle, CURLOPT_HEADER, 0);
+                curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($curlHandle, CURLOPT_SSL_VERIFYHOST, 2);
+                curl_setopt($curlHandle, CURLOPT_SSL_VERIFYPEER, 0);
+                curl_setopt($curlHandle, CURLOPT_TIMEOUT, 30);
+                curl_setopt($curlHandle, CURLOPT_POST, 1);
+                curl_setopt($curlHandle, CURLOPT_POSTFIELDS, array(
+                    'userkey' => $userkey,
+                    'passkey' => $passkey,
+                    'to' => $telepon,
+                    'message' => $message
+                ));
+                $results = json_decode(curl_exec($curlHandle), true);
+                curl_close($curlHandle);
+            }
+            // end kirim SMS GATTEWAY / WA
 
             AlertHelper::addAlert(true);
             return redirect('admin/belum_absensi/' . $request->id_jadwal);
@@ -294,6 +431,48 @@ class AbsensiController extends Controller
             AlertHelper::deleteAlert(false);
             return back();
             // something went wrong
+        }
+    }
+    public function GetBalance()
+    {
+        // ambil user dan password API
+        $sekolah = Sekolah::firstOrFail();
+        $api = $sekolah->api;
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://console.zenziva.net/api/balance/?userkey=' . $api->userkey . '&passkey=' . $api->passkey,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+        ));
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $data = json_decode($response);
+        // cek saldo
+        if (str_replace(",", "", $data->balance) > 1000) {
+            return response()->json([
+                'code' => 200,
+                'result' => $data,
+                'message' => 'Saldo Cukup',
+                'notifikasi' => $api->notifikasi,
+                'userkey' => $api->userkey,
+                'passkey' => $api->passkey,
+                'url' => $api->url,
+            ]);
+        } else {
+            return response()->json([
+                'code' => 404,
+                'result' => $data,
+                'message' => 'Saldo Tidak Cukup',
+                'notifikasi' => $api->notifikasi,
+                'userkey' => $api->userkey,
+                'passkey' => $api->passkey,
+                'url' => $api->url,
+            ]);
         }
     }
 }
