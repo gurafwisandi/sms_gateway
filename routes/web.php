@@ -121,5 +121,8 @@ Route::group(
         Route::get('/belum_absensi/{id}', [AbsensiController::class, 'belum_absensi'])->name('admin.belum_absensi');
         Route::get('/absensi_belum_absen/{id_siswa}/{id_jadwal}', [AbsensiController::class, 'absensi_belum_absen'])->name('admin.absensi_belum_absen');
         Route::post('/absensi_update_belum_absen', [AbsensiController::class, 'absensi_update_belum_absen'])->name('admin.absensi_update_belum_absen');
+        // laporan
+        Route::get('/laporan_jadwal', [JadwalController::class, 'laporan_jadwal'])->name('admin.laporan_jadwal');
+        Route::get('/laporan_absensi', [AbsensiController::class, 'laporan_absensi'])->name('admin.laporan_absensi');
     }
 );

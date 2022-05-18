@@ -20,9 +20,7 @@
                                             @csrf
                                             <button type="button" class="btn btn-light btn-rounded dropdown-toggle"
                                                 data-toggle="modal" data-target=".bs-example-modal-center"><i
-                                                    class="mdi mdi-qrcode-scan"></i> Barcode Siswa
-                                                Absensi</button>
-
+                                                    class="mdi mdi-qrcode-scan"></i> Barcode Absensi Siswa</button>
                                             @if ($jml_kelas === $lists->where('type', 'Siswa')->count())
                                                 <button type="button"
                                                     class="btn btn-light btn-rounded dropdown-toggle absensi_selesai"
@@ -45,17 +43,21 @@
                                         </form>
                                     @endif
                                 @elseif (count($last_mulai) > 0 and count($last_selesai) < 1)
-                                    @if ($jml_kelas === $lists->where('type', 'Siswa')->count())
-                                        <form class="delete-form"
-                                            action="{{ route('admin.absensi_selesai', ['id' => $id]) }}" method="POST">
-                                            @csrf
+                                    <form class="delete-form"
+                                        action="{{ route('admin.absensi_selesai', ['id' => $id]) }}" method="POST">
+                                        @csrf
+                                        <button type="button" class="btn btn-light btn-rounded dropdown-toggle"
+                                            data-toggle="modal" data-target=".bs-example-modal-center"><i
+                                                class="mdi mdi-qrcode-scan"></i> Barcode Absensi Siswa
+                                        </button>
+                                        @if ($jml_kelas === $lists->where('type', 'Siswa')->count())
                                             <button type="button"
                                                 class="btn btn-light btn-rounded dropdown-toggle absensi_selesai"
                                                 data-toggle="tooltip" data-placement="top" title="Guru Selesai Mengajar">
                                                 <i class="mdi mdi-account-multiple-check-outline"></i> Guru Selesai Mengajar
                                             </button>
-                                        </form>
-                                    @endif
+                                        @endif
+                                    </form>
                                 @else
                                     <form class="delete-form"
                                         action="{{ route('admin.absensi_mulai', ['id' => $id]) }}" method="POST">
@@ -299,20 +301,11 @@
                             decodedText,
                         },
                         success: (response) => {
-                            console.log(response)
                             var APP_URL = {!! json_encode(url('/')) !!}
                             if (response.code === 200) {
-                                Swal.fire(
-                                    'Berhasil',
-                                    `${response.message}`,
-                                    'success',
-                                ).then(function() {
-                                    // window.location = APP_URL + '/admin/absensi_kehadiran/' +
-                                    //     response.id
-                                    // kirim notifikasi API
-                                    window.location = APP_URL + '/admin/notifikasi_kehadiran/' +
-                                        response.idx
-                                })
+                                // kirim notifikasi API
+                                window.location = APP_URL + '/admin/notifikasi_kehadiran/' +
+                                    response.idx
                             } else {
                                 Swal.fire(
                                     'Gagal',

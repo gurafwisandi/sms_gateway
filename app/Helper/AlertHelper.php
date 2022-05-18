@@ -39,16 +39,25 @@ class AlertHelper
         if ($info) {
             Alert::success('Berhasil', 'Berhasil');
         } else {
-            Alert::error('Gagal', 'Kontak kosong, Gagal Notifikasi');
+            Alert::error('Gagal', 'Kontak kosong, gagal notifikasi');
         }
     }
 
     public static function saldoAlert($info)
     {
         if ($info) {
-            Alert::success('Berhasil', 'Berhasil');
+            Alert::success('Berhasil', 'Berhasil disimpan, namun saldo habis tidak kirim notifikasi');
         } else {
             Alert::error('Gagal', 'Saldo habis');
+        }
+    }
+
+    public static function notifAlert($info)
+    {
+        if ($info) {
+            Alert::success('Berhasil', 'Berhasil disimpan dan kirim notifikasi');
+        } else {
+            Alert::error('Gagal', 'Gagal disimpan dan gagal notifikasi');
         }
     }
 }

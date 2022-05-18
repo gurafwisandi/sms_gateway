@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Login | Xoric - Responsive Bootstrap 4 Admin Dashboard</title>
+    <title>Login | Lembaga Pendidikan MA Ma'arif 9 Kotagajah</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesdesign" name="author" />
@@ -40,7 +40,7 @@
                     <div class="card">
                         <div class="card-body p-4">
                             <div class="p-2">
-                                <h5 class="mb-5 text-center">Lembaga Pendidikan Ma`Arif.</h5>
+                                <h5 class="mb-5 text-center">Lembaga Pendidikan <br>MA Ma'arif 9 <br>Kotagajah.</h5>
                                 @if (count($errors) > 0)
                                     <div class="alert alert-danger" role="alert">
                                         Login Gagal!

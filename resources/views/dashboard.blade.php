@@ -14,7 +14,7 @@
         </div>
         <div class="page-content-wrapper">
             <div class="container-fluid">
-                @if (Auth::user()->roles !== 'Siswa')
+                @if (Auth::user()->roles === 'Admin')
                     <div class="row">
                         <div class="col-xl-4">
                             <div class="card">
@@ -85,23 +85,36 @@
                     <div class="col-xl-12">
                         <div class="card">
                             <div class="card-body">
-                                <form class="form-inline float-right">
-                                    <div class="input-group mb-3">
-                                        <input type="text" class="form-control form-control-sm datepicker-here"
-                                            data-range="true" data-multiple-dates-separator=" - " data-language="en"
-                                            placeholder="Select Date" />
-                                        <div class="input-group-append">
-                                            <span class="input-group-text"><i
-                                                    class="far fa-calendar font-size-12"></i></span>
-                                        </div>
-                                    </div>
-                                </form>
-                                <h5 class="header-title mb-4">Absensi</h5>
-                                <div id="yearly-sale-chart" class="apex-charts"></div>
+                                <h5 class="header-title mb-4">Absensi Per-Tanggal - {{ date('d F Y') }}</h5>
+                                <table id="datatable-buttons"
+                                    class="table table-striped table-bordered dt-responsive nowrap"
+                                    style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Kelas</th>
+                                            <th>Mata Pelajaran</th>
+                                            <th>Guru</th>
+                                            <th>Siswa Hadir</th>
+                                            <th>Siswa Tidak Hadir</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($absensi as $list)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $list->kelas }}</td>
+                                                <td>{{ $list->matpel }}</td>
+                                                <td>{{ $list->nama }}</td>
+                                                <td>{{ $list->hadir }}</td>
+                                                <td>{{ $list->tidak_hadir }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

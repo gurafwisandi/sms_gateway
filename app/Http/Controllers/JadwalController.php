@@ -179,4 +179,44 @@ class JadwalController extends Controller
             ]);
         }
     }
+    public function laporan_jadwal(Request $request)
+    {
+        if ($request->kelas or $request->matpel or $request->guru) {
+            $matchThese = [];
+            if ($request->kelas) {
+                $kelas = array('id_kelas' => $request->kelas);
+                array_push($matchThese, $kelas);
+            } else {
+                $kelas = array();
+            }
+            if ($request->matpel) {
+                $matpel = array('id_matpel' => $request->matpel);
+                array_push($matchThese, $matpel);
+            } else {
+                $matpel = array();
+            }
+            if ($request->guru) {
+                $guru = array('id_guru' => $request->guru);
+                array_push($matchThese, $guru);
+            } else {
+                $guru = array();
+            }
+            $matchThese = $kelas + $matpel + $guru;
+            $list = Jadwal::where($matchThese)->get();
+        } else {
+            $list = Jadwal::all();
+        }
+        $kelas = Kelas::all();
+        $matpel = Matpel::all();
+        $guru = Guru::all();
+        $data = [
+            'menu' => 'Laporan',
+            'title' => 'Laporan Jadwal',
+            'lists' => $list,
+            'kelas' => $kelas,
+            'guru' => $guru,
+            'matpel' => $matpel,
+        ];
+        return view('laporan.jadwal')->with($data);
+    }
 }

@@ -74,9 +74,8 @@
                             <span>Laporan</span>
                         </a>
                         <ul class="sub-menu" aria-expanded="false">
-                            <li><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
+                            <li><a href="{{ route('admin.laporan_jadwal') }}">Jadwal</a></li>
+                            <li><a href="{{ route('admin.laporan_absensi') }}">Absensi</a></li>
                         </ul>
                     </li>
                 @elseif (Auth::user()->roles === 'Guru')

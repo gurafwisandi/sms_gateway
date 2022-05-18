@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Helper\AlertHelper;
 use App\Models\Absensi;
-use App\Models\Api;
 use App\Models\Guru;
 use App\Models\Jadwal;
 use App\Models\Kelas;
@@ -43,12 +42,12 @@ class AbsensiController extends Controller
         $data = [
             'menu' => $this->menu,
             'title' => 'Absensi',
-            'lists' => Absensi::where('created_at', 'LIKE', '%' . date('Y-m-d') . '%')->get(),
+            'lists' => Absensi::where('created_at', 'LIKE', '%' . date('Y-m-d') . '%')->where('id_jadwal', $jadwal->id)->get(),
             'id' => $id,
             'barcode' => $jadwal,
             'jml_kelas' => Siswa::where('id_kelas', $jadwal->id_kelas)->count(),
-            'last_mulai' => Absensi::select('created_at')->where('type', 'Guru')->where('kehadiran', 'Mulai')->orderBy('created_at', 'DESC')->limit(1)->get(),
-            'last_selesai' => Absensi::select('created_at')->where('type', 'Guru')->where('kehadiran', 'Selesai')->orderBy('created_at', 'DESC')->limit(1)->get(),
+            'last_mulai' => Absensi::select('created_at')->where('id_jadwal', $jadwal->id)->where('type', 'Guru')->where('kehadiran', 'Mulai')->orderBy('created_at', 'DESC')->limit(1)->get(),
+            'last_selesai' => Absensi::select('created_at')->where('id_jadwal', $jadwal->id)->where('type', 'Guru')->where('kehadiran', 'Selesai')->orderBy('created_at', 'DESC')->limit(1)->get(),
         ];
         return view('absensi.absensi_kehadiran')->with($data);
     }
@@ -179,7 +178,7 @@ class AbsensiController extends Controller
     public function notifikasi_kehadiran($id)
     {
         $absensi = Absensi::findorfail($id);
-        // TODO belum selesai testing :: start kirim SMS GATEWAY / WA
+        // TODO :: start kirim SMS GATEWAY / WA
         $getBalance = $this->GetBalance(); // cek saldo
         $data_jadwal = Jadwal::findorfail($absensi->id_jadwal); // jadwal siswa mencari mata pelajaran
         if ($getBalance->original['code'] == 200) {
@@ -193,8 +192,6 @@ class AbsensiController extends Controller
             $message = 'Siswa a/n ' . $data_siswa->nama_lengkap
                 . ' pada tanggal ' . date('d F Y', strtotime($absensi->created_at))
                 . ' Hadir pada Mata Pelajaran ' . $data_jadwal->matpel->matpel;
-            // dd($message);
-            // $message .= '----------- zzzzzzzzzzzzzzzzzzzzzzz';
             // CURL
             $curlHandle = curl_init();
             curl_setopt($curlHandle, CURLOPT_URL, $url);
@@ -213,10 +210,10 @@ class AbsensiController extends Controller
             $results = json_decode(curl_exec($curlHandle), true);
             curl_close($curlHandle);
 
-
+            AlertHelper::notifAlert(true);
             return redirect('admin/absensi_kehadiran/' . Crypt::encryptString($absensi->id_jadwal));
         } else {
-            AlertHelper::saldoAlert(false);
+            AlertHelper::saldoAlert(true);
             return redirect('admin/absensi_kehadiran/' . Crypt::encryptString($absensi->id_jadwal));
         }
         // end kirim SMS GATTEWAY / WA
@@ -284,6 +281,12 @@ class AbsensiController extends Controller
                     ));
                     $results = json_decode(curl_exec($curlHandle), true);
                     curl_close($curlHandle);
+
+                    AlertHelper::notifAlert(true);
+                    return redirect('admin/absensi_kehadiran/' . Crypt::encryptString($request->id_jadwal));
+                } else {
+                    AlertHelper::saldoAlert(true);
+                    return redirect('admin/absensi_kehadiran/' . Crypt::encryptString($request->id_jadwal));
                 }
                 // end kirim SMS GATTEWAY / WA
             }
@@ -421,14 +424,18 @@ class AbsensiController extends Controller
                 ));
                 $results = json_decode(curl_exec($curlHandle), true);
                 curl_close($curlHandle);
+
+                AlertHelper::notifAlert(true);
+                return redirect('admin/belum_absensi/' . $request->id_jadwal);
+            } else {
+                AlertHelper::saldoAlert(true);
+                return redirect('admin/belum_absensi/' . $request->id_jadwal);
             }
             // end kirim SMS GATTEWAY / WA
 
-            AlertHelper::addAlert(true);
-            return redirect('admin/belum_absensi/' . $request->id_jadwal);
         } catch (\Exception $e) {
             DB::rollback();
-            AlertHelper::deleteAlert(false);
+            AlertHelper::notifAlert(false);
             return back();
             // something went wrong
         }
@@ -474,5 +481,118 @@ class AbsensiController extends Controller
                 'url' => $api->url,
             ]);
         }
+    }
+    public function laporan_absensi(Request $request)
+    {
+        if ($request->kelas or $request->matpel or $request->guru or $request->select_date) {
+            $matchThese = [];
+            if ($request->kelas) {
+                $kelas = array('jadwal.id_kelas' => $request->kelas);
+                array_push($matchThese, $kelas);
+            } else {
+                $kelas = array();
+            }
+            if ($request->matpel) {
+                $matpel = array('jadwal.id_matpel' => $request->matpel);
+                array_push($matchThese, $matpel);
+            } else {
+                $matpel = array();
+            }
+            if ($request->guru) {
+                $guru = array('jadwal.id_guru' => $request->guru);
+                array_push($matchThese, $guru);
+            } else {
+                $guru = array();
+            }
+
+            $matchThese = $kelas + $matpel + $guru;
+            if ($request->select_date) {
+                $date = explode(' - ', $request->select_date);
+                if (isset($date[1])) {
+                    $replace = array("/", " ");
+                    // start absensi
+                    $rubah_date = str_replace($replace, "-", $date[0]);
+                    $explode_date = explode("-", $rubah_date);
+                    $tgl_start = $explode_date[2] . '-' . $explode_date[0] . '-' . $explode_date[1];
+                    // end absensi
+                    $rubah_date_s = str_replace($replace, "-", $date[1]);
+                    $explode_date_s = explode("-", $rubah_date_s);
+                    $tgl_end = $explode_date_s[2] . '-' . $explode_date_s[0] . '-' . $explode_date_s[1];
+                    $list = DB::table('absensi')
+                        ->select('kelas.kelas', 'matpel.matpel', 'absensi.created_at', 'hari', 'jam_mulai', 'jam_selesai', 'guru.nama')
+                        ->selectRaw('count(case when kehadiran = "Hadir"  then kehadiran END) as hadir')
+                        ->selectRaw('count(case when kehadiran = "Tidak Hadir" then kehadiran END) as tidak_hadir')
+                        ->join('jadwal', 'jadwal.id', '=', 'absensi.id_jadwal')
+                        ->join('kelas', 'kelas.id', '=', 'jadwal.id_kelas')
+                        ->join('matpel', 'matpel.id', '=', 'jadwal.id_matpel')
+                        ->join('guru', 'guru.id', '=', 'jadwal.id_guru')
+                        ->where($matchThese)
+                        ->where('absensi.created_at', '>=', $tgl_start . ' 00:00:01')
+                        ->where('absensi.created_at', '<=', $tgl_end . ' 23:59:59')
+                        ->groupBy(DB::raw('DATE_FORMAT(absensi.created_at, "%y-%m-%d")'))
+                        ->groupBy(DB::raw('id_jadwal'))
+                        ->orderBy('absensi.created_at', 'DESC')
+                        ->get();
+                } else {
+                    $replace = array("/", " ");
+                    $rubah_date = str_replace($replace, "-", $date[0]);
+                    $explode_date = explode("-", $rubah_date);
+                    $tgl = $explode_date[2] . '-' . $explode_date[0] . '-' . $explode_date[1];
+                    $list = DB::table('absensi')
+                        ->select('kelas.kelas', 'matpel.matpel', 'absensi.created_at', 'hari', 'jam_mulai', 'jam_selesai', 'guru.nama')
+                        ->selectRaw('count(case when kehadiran = "Hadir"  then kehadiran END) as hadir')
+                        ->selectRaw('count(case when kehadiran = "Tidak Hadir" then kehadiran END) as tidak_hadir')
+                        ->join('jadwal', 'jadwal.id', '=', 'absensi.id_jadwal')
+                        ->join('kelas', 'kelas.id', '=', 'jadwal.id_kelas')
+                        ->join('matpel', 'matpel.id', '=', 'jadwal.id_matpel')
+                        ->join('guru', 'guru.id', '=', 'jadwal.id_guru')
+                        ->where($matchThese)
+                        ->where('absensi.created_at', 'LIKE', '%' . $tgl . '%')
+                        ->groupBy(DB::raw('DATE_FORMAT(absensi.created_at, "%y-%m-%d")'))
+                        ->groupBy(DB::raw('id_jadwal'))
+                        ->orderBy('absensi.created_at', 'DESC')
+                        ->get();
+                }
+            } else {
+                $list = DB::table('absensi')
+                    ->select('kelas.kelas', 'matpel.matpel', 'absensi.created_at', 'hari', 'jam_mulai', 'jam_selesai', 'guru.nama')
+                    ->selectRaw('count(case when kehadiran = "Hadir"  then kehadiran END) as hadir')
+                    ->selectRaw('count(case when kehadiran = "Tidak Hadir" then kehadiran END) as tidak_hadir')
+                    ->join('jadwal', 'jadwal.id', '=', 'absensi.id_jadwal')
+                    ->join('kelas', 'kelas.id', '=', 'jadwal.id_kelas')
+                    ->join('matpel', 'matpel.id', '=', 'jadwal.id_matpel')
+                    ->join('guru', 'guru.id', '=', 'jadwal.id_guru')
+                    ->where($matchThese)
+                    ->groupBy(DB::raw('DATE_FORMAT(absensi.created_at, "%y-%m-%d")'))
+                    ->groupBy(DB::raw('id_jadwal'))
+                    ->orderBy('absensi.created_at', 'DESC')
+                    ->get();
+            }
+        } else {
+            $list = DB::table('absensi')
+                ->select('kelas.kelas', 'matpel.matpel', 'absensi.created_at', 'hari', 'jam_mulai', 'jam_selesai', 'guru.nama')
+                ->selectRaw('count(case when kehadiran = "Hadir"  then kehadiran END) as hadir')
+                ->selectRaw('count(case when kehadiran = "Tidak Hadir" then kehadiran END) as tidak_hadir')
+                ->join('jadwal', 'jadwal.id', '=', 'absensi.id_jadwal')
+                ->join('kelas', 'kelas.id', '=', 'jadwal.id_kelas')
+                ->join('matpel', 'matpel.id', '=', 'jadwal.id_matpel')
+                ->join('guru', 'guru.id', '=', 'jadwal.id_guru')
+                ->groupBy(DB::raw('DATE_FORMAT(absensi.created_at, "%y-%m-%d")'))
+                ->groupBy(DB::raw('id_jadwal'))
+                ->orderBy('absensi.created_at', 'DESC')
+                ->get();
+        }
+        $kelas = Kelas::all();
+        $matpel = Matpel::all();
+        $guru = Guru::all();
+        $data = [
+            'menu' => 'Laporan',
+            'title' => 'Laporan absensi',
+            'lists' => $list,
+            'kelas' => $kelas,
+            'guru' => $guru,
+            'matpel' => $matpel,
+        ];
+        return view('laporan.absensi')->with($data);
     }
 }

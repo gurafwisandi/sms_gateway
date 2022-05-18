@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper\AlertHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,7 +30,6 @@ class LoginController extends Controller
                 return back()->with('loginError', 'Login Fail!');
             }
         }
-
         return back()->with('loginError', 'Login Fail!');
     }
 
