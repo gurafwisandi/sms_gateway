@@ -39,24 +39,6 @@
                                     }
                                     return $is_conn;
                                 }
-                                if (cek_internet() == true) {
-                                    $curl = curl_init();
-                                    curl_setopt_array($curl, [
-                                        CURLOPT_URL => 'https://console.zenziva.net/api/balance/?userkey=e8544e9df4ab&passkey=92b24627318363d5e322238c',
-                                        CURLOPT_RETURNTRANSFER => true,
-                                        CURLOPT_ENCODING => '',
-                                        CURLOPT_MAXREDIRS => 10,
-                                        CURLOPT_TIMEOUT => 0,
-                                        CURLOPT_FOLLOWLOCATION => true,
-                                        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                                        CURLOPT_CUSTOMREQUEST => 'GET',
-                                    ]);
-                                    $response = curl_exec($curl);
-                                    curl_close($curl);
-                                    $json = json_decode($response);
-                                    echo 'Saldo : ' . $json->balance . '<br>';
-                                    echo 'Expired : ' . $json->expired . '<br>';
-                                }
                                 ?>
                                 <table id="datatable-buttons"
                                     class="table table-striped table-bordered dt-responsive nowrap"
