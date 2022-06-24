@@ -152,7 +152,6 @@ class JadwalController extends Controller
                 'message' => 'Jadwal sudah ada',
             ]);
         }
-
         DB::beginTransaction();
         try {
             $jadwal = jadwal::findorfail($request->id);
@@ -163,7 +162,6 @@ class JadwalController extends Controller
             $jadwal->jam_selesai = $jam_selesai;
             $jadwal->hari = $hari;
             $jadwal->save();
-
             DB::commit();
             // all good
             return response()->json([

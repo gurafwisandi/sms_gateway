@@ -19,7 +19,8 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <input type="hidden" class="id" id="id" name="id" value="{{ $list->id }}">
+                                <input type="hidden" class="id" id="id" name="id"
+                                    value="{{ $list->id }}">
                                 <div class="row">
                                     <div class="col-sm-4">
                                         <div class="form-group">
@@ -67,6 +68,27 @@
                                 <div class="row">
                                     <div class="col-sm-4">
                                         <div class="form-group">
+                                            <label>Hari</label>
+                                            <select class="form-control" name="hari" id="hari">
+                                                <option value="">-- Pilih --</option>
+                                                <option value="SENIN" {{ $list->hari == 'SENIN' ? 'selected' : '' }}>
+                                                    SENIN</option>
+                                                <option value="SELASA" {{ $list->hari == 'SELASA' ? 'selected' : '' }}>
+                                                    SELASA</option>
+                                                <option value="RABU" {{ $list->hari == 'RABU' ? 'selected' : '' }}>RABU
+                                                </option>
+                                                <option value="KAMIS" {{ $list->hari == 'KAMIS' ? 'selected' : '' }}>
+                                                    KAMIS</option>
+                                                <option value="JUMAT" {{ $list->hari == 'JUMAT' ? 'selected' : '' }}>
+                                                    JUMAT</option>
+                                                <option value="SABTU" {{ $list->hari == 'SABTU' ? 'selected' : '' }}>
+                                                    SABTU</option>
+                                            </select>
+                                            <small class="text-danger">{{ $errors->first('hari') }}</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
                                             <label>Jam Mulai</label>
                                             <input type="time" class="form-control" name="jam_mulai" id="jam_mulai"
                                                 value="{{ $list->jam_mulai }}" placeholder="Jam Mulai" />
@@ -108,9 +130,10 @@
             id_guru = document.getElementById("id_guru").value;
             jam_mulai = document.getElementById("jam_mulai").value;
             jam_selesai = document.getElementById("jam_selesai").value;
+            hari = document.getElementById("hari").value;
 
             if (id === '' || id_kelas === '' || id_matpel === '' || id_guru === '' || jam_mulai === '' ||
-                jam_selesai === '') {
+                jam_selesai === '' || hari === '') {
                 Swal.fire(
                     'Gagal',
                     'Semua data wajib di isi',
@@ -130,6 +153,7 @@
                     id_guru,
                     jam_mulai,
                     jam_selesai,
+                    hari,
                 },
                 success: (response) => {
                     var APP_URL = {!! json_encode(url('/')) !!}
