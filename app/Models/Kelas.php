@@ -12,6 +12,6 @@ class Kelas extends Model
 
     public function sekolah()
     {
-        return $this->belongsTo(Sekolah::class, 'id_sekolah');
+        return $this->belongsTo(Sekolah::class, 'id_sekolah')->withTrashed();
     }
 }

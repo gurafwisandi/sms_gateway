@@ -13,16 +13,16 @@ class Absensi extends Model
 
     public function guru()
     {
-        return $this->belongsTo(Guru::class, 'id_guru');
+        return $this->belongsTo(Guru::class, 'id_guru')->withTrashed();
     }
 
     public function siswa()
     {
-        return $this->belongsTo(Siswa::class, 'id_siswa');
+        return $this->belongsTo(Siswa::class, 'id_siswa')->withTrashed();
     }
 
     public function jadwal()
     {
-        return $this->belongsTo(Jadwal::class, 'id_jadwal');
+        return $this->belongsTo(Jadwal::class, 'id_jadwal')->withTrashed();
     }
 }
