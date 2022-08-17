@@ -13,6 +13,6 @@ class Sekolah extends Model
 
     public function api()
     {
-        return $this->belongsTo(Api::class, 'id_api');
+        return $this->belongsTo(Api::class, 'id_api')->withTrashed();
     }
 }

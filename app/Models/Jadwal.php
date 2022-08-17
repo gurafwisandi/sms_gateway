@@ -13,21 +13,21 @@ class Jadwal extends Model
 
     public function kelas()
     {
-        return $this->belongsTo(Kelas::class, 'id_kelas');
+        return $this->belongsTo(Kelas::class, 'id_kelas')->withTrashed();
     }
 
     public function matpel()
     {
-        return $this->belongsTo(Matpel::class, 'id_matpel');
+        return $this->belongsTo(Matpel::class, 'id_matpel')->withTrashed();
     }
 
     public function guru()
     {
-        return $this->belongsTo(Guru::class, 'id_guru');
+        return $this->belongsTo(Guru::class, 'id_guru')->withTrashed();
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'id_user');
+        return $this->belongsTo(User::class, 'id_user')->withTrashed();
     }
 }

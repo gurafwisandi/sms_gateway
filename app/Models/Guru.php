@@ -13,11 +13,11 @@ class Guru extends Model
 
     public function kelas()
     {
-        return $this->belongsTo(Kelas::class, 'id_kelas');
+        return $this->belongsTo(Kelas::class, 'id_kelas')->withTrashed();
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'id_user');
+        return $this->belongsTo(User::class, 'id_user')->withTrashed();
     }
 }
