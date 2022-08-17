@@ -8,7 +8,7 @@
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesdesign" name="author" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="assets/images/favicon.ico">
+    <link rel="shortcut icon" href="{{ URL::asset('assets/images/logo_sekolah.png') }}">
 
     <!-- Bootstrap Css -->
     <link href="{{ URL::asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
@@ -28,8 +28,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center mb-5">
-                        <a href="#" class="logo"><img
-                                src="{{ URL::asset('assets/images/logo_sekolah.png') }}" height="130" alt="logo"></a>
+                        <a href="#" class="logo"><img src="{{ URL::asset('assets/images/logo_sekolah.png') }}"
+                                height="130" alt="logo"></a>
                     </div>
                 </div>
             </div>

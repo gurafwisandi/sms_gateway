@@ -8,7 +8,7 @@
     <meta content="Lembaga Pendidikan Ma`Arif" name="description" />
     <meta content="Themesdesign" name="author" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ URL::asset('assets/images/favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ URL::asset('assets/images/logo_sekolah.png') }}">
     <!-- datepicker -->
     <link href="{{ URL::asset('assets/libs/air-datepicker/css/datepicker.min.css') }}" rel="stylesheet"
         type="text/css" />
