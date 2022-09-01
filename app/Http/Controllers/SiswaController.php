@@ -53,7 +53,7 @@ class SiswaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nis' => 'required|numeric|unique:siswa,nis',
+            'nis' => 'required|numeric|unique:siswa,nis,' . $request->nis . ',id,deleted_at,NULL',
             'nama_lengkap' => 'required',
             'jenis_kelamin' => 'required',
             'alamat' => 'required',
@@ -61,7 +61,7 @@ class SiswaController extends Controller
             'pekerjaan_ayah' => 'required',
             'nama_ibu' => 'required',
             'pekerjaan_ibu' => 'required',
-            'no_tlp' => 'required|numeric|unique:siswa,no_tlp',
+            'no_tlp' => 'required|numeric|unique:siswa,no_tlp,' . $request->no_tlp . ',id,deleted_at,NULL',
             'id_user' => 'required',
         ]);
         DB::beginTransaction();
@@ -104,7 +104,7 @@ class SiswaController extends Controller
     {
         $request->validate([
             // validasi unique table siswa, field siswa, where id
-            'nis' => 'required|numeric|unique:siswa,nis,' . $request->id,
+            'nis' => 'required|numeric|unique:siswa,nis,' . $request->id . ',id,deleted_at,NULL',
             'nama_lengkap' => 'required',
             'jenis_kelamin' => 'required',
             'alamat' => 'required',
@@ -112,7 +112,7 @@ class SiswaController extends Controller
             'pekerjaan_ayah' => 'required',
             'nama_ibu' => 'required',
             'pekerjaan_ibu' => 'required',
-            'no_tlp' => 'required|numeric|unique:siswa,no_tlp,' . $request->id,
+            'no_tlp' => 'required|numeric|unique:siswa,no_tlp,' . $request->id . ',id,deleted_at,NULL',
             'id_user' => 'required',
         ]);
         DB::beginTransaction();

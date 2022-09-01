@@ -41,7 +41,7 @@ class MatpelController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'matpel' => 'required|unique:matpel'
+            'matpel' => 'required|unique:matpel,matpel,' . $request->matpel . ',id,deleted_at,NULL',
         ]);
         DB::beginTransaction();
         try {
@@ -62,7 +62,7 @@ class MatpelController extends Controller
     {
         $request->validate([
             // validasi unique table matpel, field matpel, where id
-            'matpel' => 'required|unique:matpel,matpel,' . $request->id
+            'matpel' => 'required|unique:matpel,matpel,' . $request->id . ',id,deleted_at,NULL',
         ]);
         DB::beginTransaction();
         try {

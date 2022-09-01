@@ -34,7 +34,7 @@ class KelasController extends Controller
     {
         $request->validate([
             'sekolah' => 'required',
-            'kelas' => 'required|unique:kelas',
+            'kelas' => 'required|unique:kelas,kelas,' . $request->kelas . ',id,deleted_at,NULL',
         ]);
         DB::beginTransaction();
         try {

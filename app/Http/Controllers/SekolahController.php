@@ -33,8 +33,8 @@ class SekolahController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kode' => 'required|unique:sekolah',
-            'sekolah' => 'required|unique:sekolah',
+            'kode' => 'required|unique:sekolah,kode,' . $request->anak_karyawan . ',id,deleted_at,NULL',
+            'sekolah' => 'required|unique:sekolah,sekolah,' . $request->sekolah . ',id,deleted_at,NULL',
             'alamat' => 'required',
             'notifikasi' => 'required',
         ]);
@@ -88,8 +88,8 @@ class SekolahController extends Controller
     {
         $request->validate([
             // validasi unique table, field, where id
-            'kode' => 'required|unique:sekolah,kode,' . $request->id,
-            'sekolah' => 'required|unique:sekolah,sekolah,' . $request->id,
+            'kode' => 'required|unique:sekolah,kode,' . $request->id . ',id,deleted_at,NULL',
+            'sekolah' => 'required|unique:sekolah,sekolah,' . $request->id . ',id,deleted_at,NULL',
             'alamat' => 'required',
             'notifikasi' => 'required',
         ]);

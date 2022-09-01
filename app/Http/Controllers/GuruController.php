@@ -47,7 +47,7 @@ class GuruController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nis' => 'required|numeric|unique:guru,nis',
+            'nis' => 'required|numeric|unique:guru,nis,' . $request->nis . ',id,deleted_at,NULL',
             'nama_lengkap' => 'required',
             'jenis_kelamin' => 'required',
             'alamat' => 'required',
@@ -57,12 +57,12 @@ class GuruController extends Controller
         $cek_kelas = Guru::where('id_kelas', $request->id_kelas)->count();
         if ($cek_kelas > 0) {
             $request->validate([
-                'nis' => 'required|numeric|unique:guru,nis',
+                'nis' => 'required|numeric|unique:guru,nis,' . $request->nis . ',id,deleted_at,NULL',
                 'nama_lengkap' => 'required',
                 'jenis_kelamin' => 'required',
                 'alamat' => 'required',
                 'id_user' => 'required',
-                'id_kelas' => 'unique:guru,id_kelas'
+                'id_kelas' => 'unique:guru,id_kelas,' . $request->id_kelas . ',id,deleted_at,NULL',
             ]);
         }
         DB::beginTransaction();
@@ -107,7 +107,7 @@ class GuruController extends Controller
     {
         $request->validate([
             // validasi unique table guru, field guru, where id
-            'nis' => 'required|numeric|unique:guru,nis,' . $request->id,
+            'nis' => 'required|numeric|unique:guru,nis,' . $request->nis . ',id,deleted_at,NULL',
             'nama_lengkap' => 'required',
             'jenis_kelamin' => 'required',
             'alamat' => 'required',
@@ -118,12 +118,12 @@ class GuruController extends Controller
             $cek_kelas = Guru::where('id_kelas', $request->id_kelas)->count();
             if ($cek_kelas > 0) {
                 $request->validate([
-                    'nis' => 'required|numeric|unique:guru,nis,' . $request->id,
+                    'nis' => 'required|numeric|unique:guru,nis,' . $request->nis . ',id,deleted_at,NULL',
                     'nama_lengkap' => 'required',
                     'jenis_kelamin' => 'required',
                     'alamat' => 'required',
                     'id_user' => 'required',
-                    'id_kelas' => 'unique:guru,id_kelas'
+                    'id_kelas' => 'unique:guru,id_kelas,' . $request->id_kelas . ',id,deleted_at,NULL',
                 ]);
             }
         }
