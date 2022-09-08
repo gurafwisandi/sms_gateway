@@ -20,7 +20,11 @@ class JadwalController extends Controller
     {
         if (Auth::user()->roles === 'Guru') {
             $guru = Guru::where('id_user', Auth::user()->id)->get();
-            $list = Jadwal::where('id_guru', $guru[0]->id)->get();
+            if (count($guru) > 0) {
+                $list = Jadwal::where('id_guru', $guru[0]->id)->get();
+            } else {
+                $list = [];
+            }
         } elseif (Auth::user()->roles === 'Admin') {
             $list = Jadwal::all();
         } elseif (Auth::user()->roles === 'Siswa') {

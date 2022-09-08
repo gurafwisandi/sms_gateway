@@ -149,7 +149,7 @@ class UserController extends Controller
         $request->validate([
             // validasi unique table User, field User, where id
             'name' => 'required',
-            'email' => 'required|unique:users,email,' . $request->id,
+            'email' => 'required|unique:users,email,' . $request->id . ',id,deleted_at,NULL',
             'roles' => 'required',
             'password' => 'required',
             'foto' => 'mimes:png,jpeg,jpg|max:2048',

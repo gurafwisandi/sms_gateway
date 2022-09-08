@@ -31,8 +31,8 @@ class ApiController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'notifikasi' => 'required|unique:api',
-            'url' => 'required|unique:api',
+            'notifikasi' => 'required|unique:api,notifikasi,' . $request->notifikasi . ',id,deleted_at,NULL',
+            'url' => 'required|unique:api,url,' . $request->url . ',id,deleted_at,NULL',
             'userkey' => 'required',
             'passkey' => 'required',
         ]);
@@ -85,8 +85,8 @@ class ApiController extends Controller
     {
         $request->validate([
             // validasi unique table, field, where id
-            'notifikasi' => 'required|unique:api,notifikasi,' . $request->id,
-            'url' => 'required|unique:api,url,' . $request->id,
+            'notifikasi' => 'required|unique:api,notifikasi,' . $request->id . ',id,deleted_at,NULL',
+            'url' => 'required|unique:api,url,' . $request->id . ',id,deleted_at,NULL',
             'userkey' => 'required',
             'passkey' => 'required',
         ]);

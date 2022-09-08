@@ -18,7 +18,11 @@ class SiswaController extends Controller
     {
         if (Auth::user()->roles === 'Guru') {
             $guru = Guru::where('id_user', Auth::user()->id)->get();
-            $list = Siswa::where('id_kelas', $guru[0]->id_kelas)->get();
+            if (count($guru) > 0) {
+                $list = Siswa::where('id_kelas', $guru[0]->id_kelas)->get();
+            } else {
+                $list = [];
+            }
             $cek = 1;
         } elseif (Auth::user()->roles === 'Admin') {
             $list = Siswa::all();
