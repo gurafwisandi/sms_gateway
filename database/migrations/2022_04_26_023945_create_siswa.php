@@ -23,7 +23,7 @@ class CreateSiswa extends Migration
             $table->string('pekerjaan_ayah');
             $table->string('nama_ibu');
             $table->string('pekerjaan_ibu');
-            $table->string('no_tlp')->unique();
+            $table->string('no_tlp');
             $table->unsignedBigInteger('id_kelas')->nullable();
             $table->foreign('id_kelas')->references('id')->on('kelas');
             $table->timestamps();

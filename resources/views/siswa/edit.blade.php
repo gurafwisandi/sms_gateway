@@ -84,8 +84,7 @@
                                                     value="{{ $list->pekerjaan_ayah }}"
                                                     oninput="this.value = this.value.toUpperCase()"
                                                     placeholder="Pekerjaan Ayah" />
-                                                <small
-                                                    class="text-danger">{{ $errors->first('pekerjaan_ayah') }}</small>
+                                                <small class="text-danger">{{ $errors->first('pekerjaan_ayah') }}</small>
                                             </div>
                                         </div>
                                     </div>
@@ -107,8 +106,7 @@
                                                     value="{{ $list->pekerjaan_ibu }}"
                                                     oninput="this.value = this.value.toUpperCase()"
                                                     placeholder="Pekerjaan Ibu" />
-                                                <small
-                                                    class="text-danger">{{ $errors->first('pekerjaan_ibu') }}</small>
+                                                <small class="text-danger">{{ $errors->first('pekerjaan_ibu') }}</small>
                                             </div>
                                         </div>
                                     </div>
